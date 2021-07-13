@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">MyPocket</string>
+    <string name="title_activity_home">Home</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="selectperiod">
+        <item>Select budget</item>
+        <item>Daily budget</item>
+        <item>Weekly budget</item>
+        <item>Monthly budget</item>
+    </string-array>
+
+    <string-array name="expcategory">
+        <item>Select Category</item>
+        <item>Bills</item>
+        <item>Education</item>
+        <item>Food</item>
+        <item>Transportation</item>
+    </string-array>
+
+    <string-array name="inccategory">
+        <item>Select Category</item>
+        <item>Allowance</item>
+        <item>Commission</item>
+        <item>Salary</item>
+        <item>Pension</item>
+    </string-array>
+
+</resources>
