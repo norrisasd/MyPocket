@@ -43,7 +43,7 @@ public class Add extends AppCompatActivity {
                     fragmentTransaction.add(R.id.fragment_view,ex,"expenseFrag");
                     fragmentTransaction.commit();
                 }
-
+//try add
             }
         });
         income.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
