@@ -35,21 +35,26 @@ public class Home extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         DBHelper db = new DBHelper(this.getApplicationContext());
-        double total = db.getTotalExpenses(getIntent().getStringExtra("user"));
-        TextView expense = findViewById(R.id.expense);
-        expense.setText(df4.format(getIntent().getExtras().getDouble("total")));
+        try{
+            double total = db.getTotalExpenses(getIntent().getStringExtra("user"));
+            TextView expense = findViewById(R.id.expense);
+            expense.setText(df4.format(getIntent().getExtras().getDouble("total")));
 
-        double totalinc = db.getTotalIncome(getIntent().getStringExtra("user"));
-        TextView income = findViewById(R.id.income);
-        income.setText(df4.format(getIntent().getExtras().getDouble("totalinc")));
+            double totalinc = db.getTotalIncome(getIntent().getStringExtra("user"));
+            TextView income = findViewById(R.id.income);
+            income.setText(df4.format(getIntent().getExtras().getDouble("totalinc")));
 
-        double totals = db.getTotalSavings(getIntent().getStringExtra("user"));
-        TextView savings = findViewById(R.id.saving);
-        savings.setText(df4.format(getIntent().getExtras().getDouble("totals")));
+            double totals = db.getTotalSavings(getIntent().getStringExtra("user"));
+            TextView savings = findViewById(R.id.saving);
+            savings.setText(df4.format(getIntent().getExtras().getDouble("totals")));
 
-        double bal = totalinc - total;
-        TextView balance = findViewById(R.id.bal);
-        balance.setText(String.valueOf(df4.format(bal)));
+            double bal = totalinc - total;
+            TextView balance = findViewById(R.id.bal);
+            balance.setText(String.valueOf(df4.format(bal)));
+        }catch (Exception e){
+
+        }
+
 //
 //        EditText nameasd = findViewById(R.id.test_name);
 //        String name = nameasd.getText().toString();
@@ -151,7 +156,7 @@ public class Home extends AppCompatActivity {
     public void openHome(){
         Intent intent = new Intent(this, Home.class);
         startActivity(intent);
-        //finish();
+        finish();
     }
 
     public void openSavings(){
