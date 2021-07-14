@@ -3,6 +3,7 @@ package com.example.mypocket;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -103,18 +104,63 @@ public class Home extends AppCompatActivity {
             }
         });
 
+
         Switch bm = findViewById(R.id.budget_button);
          ft = getSupportFragmentManager().beginTransaction();
+
+
+        SharedPreferences sharedPreferences =getSharedPreferences("save",MODE_PRIVATE);
+        SharedPreferences.Editor editor = getSharedPreferences("save",MODE_PRIVATE).edit();
+
+        boolean status = sharedPreferences.getBoolean("value",false);
+        boolean ft1 = sharedPreferences.getBoolean("fragment", false);
+
+        bm.setChecked(status);
+
+        try{
+            if(ft1)
+            {
+                ft = getSupportFragmentManager().beginTransaction();
+                budget ex = new budget();
+                ft.add(R.id.budget_fragment,ex,"budgetExpense");
+                ft.commit();
+            }
+//            else{
+//                ft = getSupportFragmentManager().beginTransaction();
+//                Fragment f = getSupportFragmentManager().findFragmentByTag("budgetExpense");
+//                ft.remove(f);
+//                ft.commit();
+//            }
+        }
+        catch(Exception e){
+
+        }
+
+
         bm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 try{
                     if(isChecked) {
+
+                        editor.putBoolean("value",true);
+                        editor.putBoolean("fragment",true);
+                        editor.apply();
+                        bm.setChecked(true);
+
                         ft = getSupportFragmentManager().beginTransaction();
                         budget ex = new budget();
                         ft.add(R.id.budget_fragment,ex,"budgetExpense");
                         ft.commit();
+
                     }else{
+
+                        editor.putBoolean("value",false);
+                        editor.putBoolean("fragment",false);
+                        editor.apply();
+                        bm.setChecked(false);
+
+
                         ft = getSupportFragmentManager().beginTransaction();
                         Fragment f = getSupportFragmentManager().findFragmentByTag("budgetExpense");
                         ft.remove(f);
@@ -139,7 +185,7 @@ public class Home extends AppCompatActivity {
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Home.this.finish();
+                        finish();
                     }
                 })
                 .setNegativeButton("No", null)
@@ -150,7 +196,6 @@ public class Home extends AppCompatActivity {
         Intent getInt = getIntent();
         intent.putExtras(getInt);
         startActivity(intent);
-        finish();
 
     }
     public void openHome(){

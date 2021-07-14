@@ -97,12 +97,14 @@ public class add_expenses extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
+
         });
 
-
-
         return view;
+
     }
+
+
 
 
 }

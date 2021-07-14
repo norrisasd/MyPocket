@@ -1,6 +1,7 @@
 package com.example.mypocket;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +11,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import java.text.DecimalFormat;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class budget extends Fragment {
 
@@ -26,8 +26,12 @@ public class budget extends Fragment {
     public String dlimit = "";
     private static DecimalFormat df2 = new DecimalFormat("#.##");
     FragmentTransaction ft;
+    EditText wbudget;
+
     ProgressBar bar;
     int counter = 0;
+    TextView text;
+    Handler handler;
 
     public budget(){
 
@@ -40,7 +44,15 @@ public class budget extends Fragment {
         View view = inflater.inflate(R.layout.fragment_budget, container, false);
 
         ImageButton bobutton = (ImageButton) view.findViewById(R.id.budgetok_button);
-        EditText wbudget = view.findViewById(R.id.weekbud);
+         wbudget = view.findViewById(R.id.weekbud);
+        ImageButton editbutton = view.findViewById(R.id.edit_button);
+
+        editbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                wbudget.setEnabled(true);
+            }
+        });
 
 
 
@@ -70,6 +82,7 @@ public class budget extends Fragment {
                         @Override
                         public void onClick(View v) {
                             Toast.makeText(getActivity().getApplicationContext(), "NO SELECTED BUDGET!", Toast.LENGTH_SHORT).show();
+                            wbudget.setEnabled(false);
                         }
                     });
                 }
@@ -118,6 +131,7 @@ public class budget extends Fragment {
                                         double dailylimit = bud/31;
                                         weeklimit = df2.format(weeklylimit);
                                         Dailylimit = df2.format(dailylimit);
+                                        wbudget.setEnabled(false);
 
                                     }
 
@@ -183,6 +197,8 @@ public class budget extends Fragment {
                                         double dl = bud/7;
                                         dlimit = df2.format(dl);
 
+                                        wbudget.setEnabled(false);
+
                                     }
 
                                     else{
@@ -202,6 +218,7 @@ public class budget extends Fragment {
                                 } catch(Exception e){
                                     Toast.makeText(getActivity().getApplicationContext(), "Empty Field", Toast.LENGTH_SHORT).show();
                                 }
+
                             }
                         });
                     }
@@ -239,6 +256,7 @@ public class budget extends Fragment {
                                         }
                                         else{
                                             progressbar();
+                                            wbudget.setEnabled(false);
                                         }
 
                                     }catch (Exception e){
@@ -248,6 +266,7 @@ public class budget extends Fragment {
                                 }catch (Exception e){
                                     Toast.makeText(getActivity().getApplicationContext(), "Empty Field", Toast.LENGTH_SHORT).show();
                                 }
+
 
                             }
                         });
@@ -272,39 +291,33 @@ public class budget extends Fragment {
     }
 
     public void progressbar(){
-//        DBHelper db = new DBHelper(getActivity().getApplicationContext());
-//        double total = db.getTotalExpenses(getActivity().getIntent().getStringExtra("user"));
-//        double totalinc = db.getTotalIncome(getActivity().getIntent().getStringExtra("user"));
-//        double bal = totalinc - total;
-//        int newbal = (int)bal;
-//        int newtotal = (int)total;
+        DBHelper db = new DBHelper(getActivity().getApplicationContext());
+        double total = db.getTotalExpenses(getActivity().getIntent().getStringExtra("user"));
+        int newtotal = (int)total;
+        double bud = Double.parseDouble(wbudget.getText().toString());
+
         bar = getView().findViewById(R.id.progressBar);
+        text = getView().findViewById(R.id.prog_count);
+        handler = new Handler();
+        bar.setMax((int)bud);
 
-
-        Timer t = new Timer();
-
-
-       // bar.setProgress(x);
-        // thread is used to change the progress value
-        TimerTask tt = new TimerTask() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
-                try{
-                    counter++;
-                    bar.setProgress(counter);
+                  counter = newtotal;
 
-                    if (counter == 100)
-                        t.cancel();
-                }catch (Exception e){
-                    Toast.makeText(getContext(), "sdfafsdfsdfsfs", Toast.LENGTH_SHORT).show();
-                }
-
+ //               if(counter != bar.getMax()){
+ //                   counter += newtotal;
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            bar.setProgress(counter);
+                            text.setText(counter +"/"+ bar.getMax());
+                        }
+                    });
+ //               }
             }
-        };
-        t.schedule(tt,0,100);
-
-
-
+        }).start();
 
     }
 
