@@ -1,6 +1,7 @@
 package com.example.mypocket;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -111,6 +112,10 @@ public class Home extends AppCompatActivity {
 
         SharedPreferences sharedPreferences =getSharedPreferences("save",MODE_PRIVATE);
         SharedPreferences.Editor editor = getSharedPreferences("save",MODE_PRIVATE).edit();
+        SharedPreferences prefs = getSharedPreferences("data", 0);
+        SharedPreferences.Editor edit = prefs.edit();
+        SharedPreferences sharedPref = getSharedPreferences("FileName", Context.MODE_PRIVATE);
+        SharedPreferences.Editor e = sharedPref.edit();
 
         boolean status = sharedPreferences.getBoolean("value",false);
         boolean ft1 = sharedPreferences.getBoolean("fragment", false);
@@ -126,7 +131,7 @@ public class Home extends AppCompatActivity {
                 ft.commit();
             }
         }
-        catch(Exception e){
+        catch(Exception er){
 
         }
 
@@ -152,6 +157,8 @@ public class Home extends AppCompatActivity {
                         editor.putBoolean("value",false);
                         editor.putBoolean("fragment",false);
                         editor.apply();
+                        edit.remove("amount").apply();
+                        e.remove("userChoiceSpinner").apply();
                         bm.setChecked(false);
 
 
