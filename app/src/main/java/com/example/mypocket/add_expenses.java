@@ -55,6 +55,7 @@ public class add_expenses extends Fragment {
                             if(check){
                                 Toast.makeText(getActivity().getApplicationContext(), "Added", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getActivity(),Home.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 Intent getInt = getActivity().getIntent();
                                 double total = db.getTotalExpenses(user);
                                 intent.putExtras(getInt);
@@ -80,6 +81,7 @@ public class add_expenses extends Fragment {
                             if(check){
                                 Toast.makeText(getActivity().getApplicationContext(), "Added", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getActivity(),Home.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 Intent getInt = getActivity().getIntent();
                                 double total = db.getTotalExpenses(user);
                                 intent.putExtras(getInt);

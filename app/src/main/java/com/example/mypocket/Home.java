@@ -76,7 +76,7 @@ public class Home extends AppCompatActivity {
         hbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                openHome();
+
             }
         });
 
@@ -125,12 +125,6 @@ public class Home extends AppCompatActivity {
                 ft.add(R.id.budget_fragment,ex,"budgetExpense");
                 ft.commit();
             }
-//            else{
-//                ft = getSupportFragmentManager().beginTransaction();
-//                Fragment f = getSupportFragmentManager().findFragmentByTag("budgetExpense");
-//                ft.remove(f);
-//                ft.commit();
-//            }
         }
         catch(Exception e){
 
@@ -196,12 +190,11 @@ public class Home extends AppCompatActivity {
         Intent getInt = getIntent();
         intent.putExtras(getInt);
         startActivity(intent);
-
     }
     public void openHome(){
         Intent intent = new Intent(this, Home.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
-        finish();
     }
 
     public void openSavings(){
@@ -209,7 +202,6 @@ public class Home extends AppCompatActivity {
         Intent getInt = getIntent();
         intent.putExtras(getInt);
         startActivity(intent);
-
     }
 
     public void openTrans(){

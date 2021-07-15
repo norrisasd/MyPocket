@@ -1,5 +1,7 @@
 package com.example.mypocket;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -21,8 +23,8 @@ import java.text.DecimalFormat;
 
 public class budget extends Fragment {
 
-    public String weeklimit = "";
-    public String Dailylimit = "";
+    public String weeklimit ;
+    public String Dailylimit;
     public String dlimit = "";
     private static DecimalFormat df2 = new DecimalFormat("#.##");
     FragmentTransaction ft;
@@ -33,6 +35,10 @@ public class budget extends Fragment {
     TextView text;
     Handler handler;
 
+    SharedPreferences prefs;
+    SharedPreferences.Editor edit;
+    SharedPreferences s;
+    SharedPreferences.Editor weekedit;
     public budget(){
 
     }
@@ -44,7 +50,7 @@ public class budget extends Fragment {
         View view = inflater.inflate(R.layout.fragment_budget, container, false);
 
         ImageButton bobutton = (ImageButton) view.findViewById(R.id.budgetok_button);
-         wbudget = view.findViewById(R.id.weekbud);
+        wbudget = view.findViewById(R.id.weekbud);
         ImageButton editbutton = view.findViewById(R.id.edit_button);
 
         editbutton.setOnClickListener(new View.OnClickListener() {
@@ -54,6 +60,22 @@ public class budget extends Fragment {
             }
         });
 
+        month();
+        week();
+
+        prefs = getActivity().getSharedPreferences("data", 0);
+        edit = prefs.edit();
+        if(prefs.contains("amount"))
+            wbudget.setText(String.valueOf(prefs.getInt("amount",0)));
+        if(prefs.contains("mweek"))
+            weeklimit = prefs.getString("mweek","");
+        if(prefs.contains("mdaily"))
+            Dailylimit = prefs.getString("mdaily","");
+
+        s = getActivity().getSharedPreferences("weekdata", 0);
+        weekedit = s.edit();
+        if(s.contains("week"))
+            dlimit =s.getString("week","");
 
 
 
@@ -62,27 +84,47 @@ public class budget extends Fragment {
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         period.setAdapter(myAdapter);
 
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("FileName",Context.MODE_PRIVATE);
+        int spinnerValue = sharedPref.getInt("userChoiceSpinner",-1);
+        if(spinnerValue != -1) {
+            // set the selected value of the spinner
+           period.setSelection(spinnerValue);
+        }
+
         period.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                int userChoice = period.getSelectedItemPosition();
+                SharedPreferences sharedPref = getActivity().getSharedPreferences("FileName",0);
+                SharedPreferences.Editor prefEditor = sharedPref.edit();
+                prefEditor.putInt("userChoiceSpinner",userChoice);
+                prefEditor.commit();
+
                 if(parent.getItemAtPosition(position).equals("Select budget")){
 
                     ft = getChildFragmentManager().beginTransaction();
                     Fragment f = getChildFragmentManager().findFragmentByTag("monthly");
                     Fragment f1 = getChildFragmentManager().findFragmentByTag("weekly");
                     if(f != null ){
+                        edit.remove("m").apply();
                         ft.remove(f);
                         ft.commit();
                     }
                     else if(f1 != null){
+                        edit.remove("w").apply();
                         ft.remove(f1);
                         ft.commit();
                     }
+                    clear();
+
+
                     bobutton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Toast.makeText(getActivity().getApplicationContext(), "NO SELECTED BUDGET!", Toast.LENGTH_SHORT).show();
                             wbudget.setEnabled(false);
+
                         }
                     });
                 }
@@ -112,26 +154,35 @@ public class budget extends Fragment {
                                     double bud = Double.parseDouble(wbudget.getText().toString());
 
                                     if (bud > 0 && bud <= bal) {
-
                                         ft = getChildFragmentManager().beginTransaction();
 
                                         if(f != null){
                                             ft.remove(f);
                                             ft.commit();
                                         }
-                                        else{
+
                                             ft = getChildFragmentManager().beginTransaction();
                                             monthly_budget month = new monthly_budget();
                                             ft.add(R.id.limit_fragment,month,"monthly");
                                             ft.commit();
-                                        }
+
+                                            edit.putBoolean("m",true);
+                                            edit.apply();
 
 
-                                        double weeklylimit = bud/4;
-                                        double dailylimit = bud/31;
-                                        weeklimit = df2.format(weeklylimit);
-                                        Dailylimit = df2.format(dailylimit);
-                                        wbudget.setEnabled(false);
+                                            savedata();
+
+                                            double weeklylimit = bud/4;
+                                            double dailylimit = bud/31;
+                                            weeklimit = df2.format(weeklylimit);
+                                            Dailylimit = df2.format(dailylimit);
+
+                                            edit.putString("mweek",weeklimit);
+                                            edit.putString("mdaily",Dailylimit);
+                                            edit.apply();
+
+                                            progressbar();
+                                            wbudget.setEnabled(false);
 
                                     }
 
@@ -179,7 +230,7 @@ public class budget extends Fragment {
 
                                     double bud = Double.parseDouble(wbudget.getText().toString());
 
-                                    if (bud <= bal) {
+                                    if (bud <= bal && bud > 0) {
 
                                         ft = getChildFragmentManager().beginTransaction();
 
@@ -193,10 +244,18 @@ public class budget extends Fragment {
                                         ft.add(R.id.limit_fragment,week,"weekly");
                                         ft.commit();
 
+                                        edit.putBoolean("w",true);
+                                        edit.apply();
+
+                                        savedata();
 
                                         double dl = bud/7;
                                         dlimit = df2.format(dl);
 
+                                        weekedit.putString("week",dlimit);
+                                        weekedit.apply();
+
+                                        progressbar();
                                         wbudget.setEnabled(false);
 
                                     }
@@ -235,9 +294,11 @@ public class budget extends Fragment {
                             ft.commit();
                         }
                         else if(f1 != null){
+                            edit.remove("w").apply();
                             ft.remove(f1);
                             ft.commit();
                         }
+
 
                         bobutton.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -249,14 +310,18 @@ public class budget extends Fragment {
                                     double totalinc = db.getTotalIncome(getActivity().getIntent().getStringExtra("user"));
                                     double bal = totalinc - total;
                                     double bud = Double.parseDouble(wbudget.getText().toString());
-                                   // int x =0;
+
+
+
                                     try{
-                                        if(bud > bal){
+                                        if(bud > bal || bud == 0){
                                             Toast.makeText(getActivity().getApplicationContext(), "INSUFFICIENT BALANCE!", Toast.LENGTH_SHORT).show();
                                         }
                                         else{
                                             progressbar();
+                                            savedata();
                                             wbudget.setEnabled(false);
+
                                         }
 
                                     }catch (Exception e){
@@ -282,12 +347,55 @@ public class budget extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
+
         });
         //END OF DROPDOWN
 
-
-
         return view;
+    }
+
+
+    public void savedata(){
+        edit.putInt("amount", Integer.parseInt(wbudget.getText().toString()));
+        edit.apply();
+    }
+    public void clear(){
+        wbudget.setText("");
+    }
+
+    public void month(){
+        SharedPreferences prefs = getActivity().getSharedPreferences("data", 0);
+        boolean frag = prefs.getBoolean("m", false);
+        try{
+            if(frag)
+            {
+                ft = getChildFragmentManager().beginTransaction();
+                monthly_budget month = new monthly_budget();
+                ft.add(R.id.limit_fragment,month,"monthly");
+                ft.commit();
+            }
+        }
+        catch(Exception e){
+
+        }
+    }
+
+    public void week(){
+        SharedPreferences prefs = getActivity().getSharedPreferences("data", 0);
+        boolean frag = prefs.getBoolean("w", false);
+        try{
+            if(frag)
+            {
+                ft = getChildFragmentManager().beginTransaction();
+                weekly_budget week = new weekly_budget();
+                ft.add(R.id.limit_fragment,week,"weekly");
+                ft.commit();
+
+            }
+        }
+        catch(Exception e){
+
+        }
     }
 
     public void progressbar(){

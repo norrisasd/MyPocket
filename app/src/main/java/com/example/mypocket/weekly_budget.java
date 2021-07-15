@@ -1,5 +1,6 @@
 package com.example.mypocket;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +19,13 @@ public class weekly_budget extends Fragment {
         View view = inflater.inflate(R.layout.fragment_weekly_budget, container, false);
 
 
-        String bisagunsa2 = ((budget)getParentFragment()).dlimit;
-        TextView weekbud = view.findViewById(R.id.weekdl);
-        weekbud.setText(bisagunsa2);
+        //String bisagunsa2 = ((budget)getParentFragment()).dlimit;
+        TextView wb = view.findViewById(R.id.weekdl);
+        //weekbud.setText(bisagunsa2);
+
+        SharedPreferences s = getActivity().getSharedPreferences("weekdata", 0);
+        if(s.contains("week"))
+            wb.setText(s.getString("week",""));
 
         return view;
     }
