@@ -57,13 +57,6 @@ public class Home extends AppCompatActivity {
 
         }
 
-//
-//        EditText nameasd = findViewById(R.id.test_name);
-//        String name = nameasd.getText().toString();
-//        TextView v = findViewById(R.id.test_view);
-//
-//        v.setText(name);
-
 
         addbutton = findViewById(R.id.add);
         addbutton.setOnClickListener(new View.OnClickListener() {
@@ -219,7 +212,9 @@ public class Home extends AppCompatActivity {
     }
 
     public void openBillings(){
-        Intent intent = new Intent(this, Billings.class);
+        Intent intent = new Intent(this, Categories.class);
+        Intent getInt = getIntent();
+        intent.putExtras(getInt);
         startActivity(intent);
     }
 

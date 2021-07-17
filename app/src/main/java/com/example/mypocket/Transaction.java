@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class Transaction extends AppCompatActivity {
     ArrayList<String> explist= new ArrayList<>();
     ArrayList<String> inclist= new ArrayList<>();
+    ArrayList<String> savingslist= new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,8 @@ public class Transaction extends AppCompatActivity {
 
         RadioButton expense= (RadioButton) findViewById(R.id.rad_expense_trans);
         RadioButton income= (RadioButton) findViewById(R.id.Income_rad_trans);
+        RadioButton savings = findViewById(R.id.rad_savings_trans);
+
         expense.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -63,6 +66,23 @@ public class Transaction extends AppCompatActivity {
 
             }
         });
+        savings.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if(isChecked){
+                    try{
+                        savingslist = db.getAllSavingsDates(user);
+                        ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(),android.R.layout.simple_list_item_1,android.R.id.text1,savingslist);
+                        list.setAdapter(arrayAdapter);
+                    }catch(Exception e){
+
+                    }
+
+                }
+
+            }
+        });
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -76,6 +96,10 @@ public class Transaction extends AppCompatActivity {
                 if(expense.isChecked()){
                     date = explist.get(position);
                     check="expense";
+                }
+                if(savings.isChecked()){
+                    date = savingslist.get(position);
+                    check="savings";
                 }
                 Intent intent = new Intent(getApplicationContext(), Transaction_details.class);
                 intent.putExtra("date", date);

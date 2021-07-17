@@ -38,15 +38,23 @@
             android:text="Income"
             android:textAlignment="center" />
 
+        <RadioButton
+            android:id="@+id/rad_savings_trans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Savings"
+            android:textAlignment="center" />
+
     </RadioGroup>
 
     <TextView
         android:id="@+id/textView9"
         android:layout_width="171dp"
         android:layout_height="25dp"
-        android:layout_marginStart="154dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="154dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="120dp"
         android:layout_marginBottom="16dp"
         android:text="TRANSACTION HISTORY"
         app:layout_constraintBottom_toTopOf="@+id/radioGroup"

@@ -43,6 +43,10 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String ECAT_ID = "ECATEGORY_ID";
     private static final String ECATEGORY = "CATEGORY";
 
+    private static final String ICATEGORY_TABLE = "ICATEGORY_TABLE";
+    private static final String ICAT_ID = "ICATEGORY_ID";
+    private static final String ICATEGORY = "CATEGORY";
+
     public DBHelper(@Nullable Context context) {
         super(context, "expensetracker.db", null, 1);
     }
@@ -64,6 +68,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
         String createECategory = "CREATE TABLE " + ECATEGORY_TABLE + " (" + ECAT_ID + " INTEGER PRIMARY KEY, " + USERNAME + " TEXT, "  + ECATEGORY + " TEXT )";
         db.execSQL(createECategory);
+
+        String createICategory = "CREATE TABLE " + ICATEGORY_TABLE + " (" + ICAT_ID + " INTEGER PRIMARY KEY, " + USERNAME + " TEXT, "  + ICATEGORY + " TEXT )";
+        db.execSQL(createICategory);
     }
 
     @Override
@@ -174,7 +181,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public ArrayList<String> getAllExpenseDates(String user){
         ArrayList<String> dates =new ArrayList<>();
         String query = "SELECT DISTINCT DATE FROM EXPENSE_TABLE\n" +
-                        "WHERE USERNAME = '"+user+"'";
+                        "WHERE USERNAME = '"+user+"'"+"ORDER BY DATE desc";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         if(cursor.moveToFirst()){
@@ -187,7 +194,20 @@ public class DBHelper extends SQLiteOpenHelper {
     public ArrayList<String> getAllIncomeDates(String user){
         ArrayList<String> dates =new ArrayList<>();
         String query = "SELECT DISTINCT DATE FROM INCOME_TABLE\n" +
-                "WHERE USERNAME = '"+user+"'";
+                "WHERE USERNAME = '"+user+"'"+"ORDER BY DATE desc";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()){
+            do{
+                dates.add(cursor.getString(0));
+            }while(cursor.moveToNext());
+        }
+        return dates;
+    }
+    public ArrayList<String> getAllSavingsDates(String user){
+        ArrayList<String> dates =new ArrayList<>();
+        String query = "SELECT DISTINCT DATE FROM SAVINGS_TABLE\n" +
+                "WHERE USERNAME = '"+user+"'"+"ORDER BY DATE desc";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         if(cursor.moveToFirst()){
@@ -225,6 +245,20 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return amounts;
     }
+    public ArrayList<Integer> getSavingsIDByDate(String user,String date){
+        ArrayList<Integer> amounts =new ArrayList<>();
+        String query =" SELECT SAVINGS_ID FROM SAVINGS_TABLE\n" +
+                "WHERE USERNAME = '"+user+"' AND DATE = '"+date+"'\n" +
+                "ORDER BY AMOUNT desc";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()){
+            do{
+                amounts.add(cursor.getInt(0));
+            }while(cursor.moveToNext());
+        }
+        return amounts;
+    }
     public String getIncomeAmountById(String user, int id){
         String amount = "";
         String query =" SELECT AMOUNT FROM INCOME_TABLE\n" +
@@ -247,6 +281,17 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return amount;
     }
+    public String getSavingsAmountById(String user, int id){
+        String amount = "";
+        String query =" SELECT AMOUNT FROM SAVINGS_TABLE\n" +
+                "WHERE SAVINGS_ID = '"+id+"' AND USERNAME = '"+user+"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()){
+            amount = Double.toString(cursor.getDouble(0));
+        }
+        return amount;
+    }
     public Cursor getExpensesInfoByID(String user,int id){
         String query =" SELECT * FROM EXPENSE_TABLE\n" +
                 "WHERE EXPENSE_ID = '"+id+"' AND USERNAME = '"+user+"'";
@@ -258,6 +303,14 @@ public class DBHelper extends SQLiteOpenHelper {
     public Cursor getIncomeInfoByID(String user,int id){
         String query =" SELECT * FROM INCOME_TABLE\n" +
                 "WHERE INCOME_ID = '"+id+"' AND USERNAME = '"+user+"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+        return cursor;
+    }
+    public Cursor getSavingsInfoByID(String user,int id){
+        String query =" SELECT * FROM SAVINGS_TABLE\n" +
+                "WHERE SAVINGS_ID = '"+id+"' AND USERNAME = '"+user+"'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
@@ -300,7 +353,6 @@ public class DBHelper extends SQLiteOpenHelper {
         boolean check = false;
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(ECATEGORY, "Food");
         cv.put(USERNAME, user);
         cv.put(ECATEGORY, category);
         long insert = db.insert(ECATEGORY_TABLE, null, cv);
@@ -312,5 +364,44 @@ public class DBHelper extends SQLiteOpenHelper {
         return check;
     }
 
+    public boolean createICategory(String user, String category){
+        boolean check = false;
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(USERNAME, user);
+        cv.put(ICATEGORY, category);
+        long insert = db.insert(ICATEGORY_TABLE, null, cv);
+        if (insert == -1) {
+            check = false;
+        } else
+            check = true;
 
+        return check;
+    }
+    public ArrayList<String> getExpenseCategory(){
+        ArrayList<String> expenselist =new ArrayList<>();
+        String query =" SELECT CATEGORY FROM ECATEGORY_TABLE\n";
+//                +" WHERE USERNAME='" + user + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()){
+            do
+            expenselist.add(cursor.getString(0));
+            while(cursor.moveToNext());
+        }
+        return expenselist;
+    }
+    public ArrayList<String> getIncomeCategory(){
+        ArrayList<String> incomelist =new ArrayList<>();
+        String query =" SELECT CATEGORY FROM ICATEGORY_TABLE\n";
+//                +" WHERE USERNAME='" + user + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()){
+            do
+                incomelist.add(cursor.getString(0));
+            while(cursor.moveToNext());
+        }
+        return incomelist;
+    }
 }

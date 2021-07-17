@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
             Intent intent = new Intent(this, Home.class);
             double total = db.getTotalExpenses(username);
-            intent.putExtra("user",username);
+
             intent.putExtra("total",total);
 
             double totalinc = db.getTotalIncome(username);

@@ -36,7 +36,14 @@ public class Transaction_details extends AppCompatActivity {
                 arrayList.add(db.getExpensesAmountById(user,id));
             }
 
-        }else{
+        }
+        else if(check.equals("savings")) {
+            arrayID = db.getSavingsIDByDate(user, date);
+            for (Integer id : arrayID) {
+                arrayList.add(db.getSavingsAmountById(user, id));
+            }
+        }
+        else{
             arrayID = db.getIncomeIDByDate(user,date);
             for(Integer id : arrayID){
                 arrayList.add(db.getIncomeAmountById(user,id));
@@ -51,17 +58,26 @@ public class Transaction_details extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Cursor cursor;
                 AlertDialog.Builder builder = new AlertDialog.Builder(Transaction_details.this);
+
                 if(check.equals("income")){
                     cursor = db.getIncomeInfoByID(user,arrayID.get(position));
                     builder.setTitle("Income");
-                }else {
+                    builder.setMessage("Amount:"+Double.toString(cursor.getDouble(5))+"\nCategory: "+cursor.getString(3)+"\nDate: "+cursor.getString(2)+"\nNote: "+cursor.getString(4)+"");
+//                    builder.setCancelable(false);
+                }
+                else if(check.equals("savings")){
+                    cursor = db.getSavingsInfoByID(user,arrayID.get(position));
+                    builder.setTitle("Savings");
+                    builder.setMessage("Amount:"+Double.toString(cursor.getDouble(4))+"\nDate: "+cursor.getString(2)+
+                            "\nNote: "+cursor.getString(3)+"");
+                }
+                else {
                     cursor = db.getExpensesInfoByID(user, arrayID.get(position));
                     builder.setTitle("Expenses");
+                    builder.setMessage("Amount:"+Double.toString(cursor.getDouble(5))+"\nCategory: "+cursor.getString(3)+"\nDate: "+cursor.getString(2)+"\nNote: "+cursor.getString(4)+"");
                 }
 
-                builder.setMessage("Amount:"+Double.toString(cursor.getDouble(5))+"\nCategory: "+cursor.getString(3)+"\nDate: "+cursor.getString(2)+"\nNote: "+cursor.getString(4)+"");
-                builder.setCancelable(false);
-                builder.setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton("EDIT", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
@@ -71,10 +87,7 @@ public class Transaction_details extends AppCompatActivity {
                     }
                 });
 
-                // Set the Negative button with No name
-                // OnClickListener method is use
-                // of DialogInterface interface.
-                builder.setNegativeButton("EDIT", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton("DELETE", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
@@ -85,11 +98,10 @@ public class Transaction_details extends AppCompatActivity {
                     }
                 });
 
-                // Create the Alert dialog
                 AlertDialog alertDialog = builder.create();
-
-                // Show the Alert Dialog box
                 alertDialog.show();
+
+
             }
         });
     }

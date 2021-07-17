@@ -52,6 +52,8 @@ public class budget extends Fragment {
         ImageButton bobutton = (ImageButton) view.findViewById(R.id.budgetok_button);
         wbudget = view.findViewById(R.id.weekbud);
         ImageButton editbutton = view.findViewById(R.id.edit_button);
+        text = view.findViewById(R.id.prog_count);
+        bar = view.findViewById(R.id.progressBar);
 
         editbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,11 +68,26 @@ public class budget extends Fragment {
         prefs = getActivity().getSharedPreferences("data", 0);
         edit = prefs.edit();
         if(prefs.contains("amount"))
-            wbudget.setText(String.valueOf(prefs.getInt("amount",0)));
+            wbudget.setText(String.valueOf((prefs.getFloat("amount", 0.00f))));
         if(prefs.contains("mweek"))
             weeklimit = prefs.getString("mweek","");
         if(prefs.contains("mdaily"))
             Dailylimit = prefs.getString("mdaily","");
+        if(prefs.contains("prog"))
+            text.setText((prefs.getString("prog","")));
+        if(prefs.contains("pbar"))
+            bar.setProgress(prefs.getInt("pbar", 0));
+        if (prefs.contains("maxx"))
+            bar.setMax(prefs.getInt("maxx",0));
+
+
+
+//        if(prefs.contains("text"))
+//        {
+//            t = prefs.getString("prog", "");
+////            if(prefs.contains("text"))
+//            text.setText(prefs.getString("prog", ""));
+//        }
 
         s = getActivity().getSharedPreferences("weekdata", 0);
         weekedit = s.edit();
@@ -117,7 +134,7 @@ public class budget extends Fragment {
                         ft.commit();
                     }
                     clear();
-
+                    clearprog();
 
                     bobutton.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -138,6 +155,7 @@ public class budget extends Fragment {
                             ft.remove(f1);
                             ft.commit();
                         }
+                        progressbar();
 
                         bobutton.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -180,17 +198,18 @@ public class budget extends Fragment {
                                             edit.putString("mweek",weeklimit);
                                             edit.putString("mdaily",Dailylimit);
                                             edit.apply();
-
                                             progressbar();
                                             wbudget.setEnabled(false);
 
                                     }
 
                                     else{
-
+                                        clearprog();
                                         ft = getChildFragmentManager().beginTransaction();
                                         f = getChildFragmentManager().findFragmentByTag("monthly");
                                         if(f != null){
+                                            edit.remove("amount").apply();
+                                            edit.remove("m").apply();
                                             ft.remove(f);
                                             ft.commit();
                                         }
@@ -215,6 +234,8 @@ public class budget extends Fragment {
                             ft.remove(f1);
                             ft.commit();
                         }
+
+                        progressbar();
 
                         bobutton.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -254,17 +275,18 @@ public class budget extends Fragment {
 
                                         weekedit.putString("week",dlimit);
                                         weekedit.apply();
-
                                         progressbar();
                                         wbudget.setEnabled(false);
 
                                     }
 
                                     else{
-
+                                        clearprog();
                                         ft = getChildFragmentManager().beginTransaction();
                                         f = getChildFragmentManager().findFragmentByTag("weekly");
                                         if(f != null){
+                                            edit.remove("amount").apply();
+                                            edit.remove("w").apply();
                                             ft.remove(f);
                                             ft.commit();
                                         }
@@ -277,12 +299,9 @@ public class budget extends Fragment {
                                 } catch(Exception e){
                                     Toast.makeText(getActivity().getApplicationContext(), "Empty Field", Toast.LENGTH_SHORT).show();
                                 }
-
                             }
                         });
                     }
-
-
 
                     else if(parent.getItemAtPosition(position).equals("Daily budget")){
                       //  Toast.makeText(getActivity().getApplicationContext(),"DAILY SHIT", Toast.LENGTH_SHORT).show();
@@ -290,6 +309,7 @@ public class budget extends Fragment {
                         Fragment f = getChildFragmentManager().findFragmentByTag("monthly");
                         Fragment f1 = getChildFragmentManager().findFragmentByTag("weekly");
                         if(f != null ){
+                            edit.remove("m").apply();
                             ft.remove(f);
                             ft.commit();
                         }
@@ -299,6 +319,7 @@ public class budget extends Fragment {
                             ft.commit();
                         }
 
+                        progressbar();
 
                         bobutton.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -311,15 +332,15 @@ public class budget extends Fragment {
                                     double bal = totalinc - total;
                                     double bud = Double.parseDouble(wbudget.getText().toString());
 
-
-
                                     try{
                                         if(bud > bal || bud == 0){
                                             Toast.makeText(getActivity().getApplicationContext(), "INSUFFICIENT BALANCE!", Toast.LENGTH_SHORT).show();
+                                            edit.remove("amount").apply();
+                                            clearprog();
                                         }
                                         else{
-                                            progressbar();
                                             savedata();
+                                            progressbar();
                                             wbudget.setEnabled(false);
 
                                         }
@@ -356,7 +377,7 @@ public class budget extends Fragment {
 
 
     public void savedata(){
-        edit.putInt("amount", Integer.parseInt(wbudget.getText().toString()));
+        edit.putFloat("amount", Float.parseFloat(wbudget.getText().toString()));
         edit.apply();
     }
     public void clear(){
@@ -399,35 +420,61 @@ public class budget extends Fragment {
     }
 
     public void progressbar(){
-        DBHelper db = new DBHelper(getActivity().getApplicationContext());
-        double total = db.getTotalExpenses(getActivity().getIntent().getStringExtra("user"));
-        int newtotal = (int)total;
-        double bud = Double.parseDouble(wbudget.getText().toString());
+        try{
+            DBHelper db = new DBHelper(getActivity().getApplicationContext());
+            double total = db.getTotalExpenses(getActivity().getIntent().getStringExtra("user"));
+            double totalinc = db.getTotalIncome(getActivity().getIntent().getStringExtra("user"));
+            double bal = totalinc -total;
+            //int newbal = (int)bal;
+            int newtotal = (int)total;
+            double bud = Double.parseDouble(wbudget.getText().toString());
 
-        bar = getView().findViewById(R.id.progressBar);
-        text = getView().findViewById(R.id.prog_count);
-        handler = new Handler();
-        bar.setMax((int)bud);
+            if(bud <= bal){
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                  counter = newtotal;
+                handler = new Handler();
+                bar.setMax((int)bud);
+                edit.putInt("maxx", (int)bud).apply();
 
- //               if(counter != bar.getMax()){
- //                   counter += newtotal;
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            bar.setProgress(counter);
-                            text.setText(counter +"/"+ bar.getMax());
-                        }
-                    });
- //               }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        counter = newtotal;
+                        edit.putInt("pbar",counter).apply();
+                        //               if(counter != bar.getMax()){
+                        //                   counter += newtotal;
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                bar.setProgress(counter);
+                                text.setText(counter +"/"+ bar.getMax());
+                                edit.putString("prog", text.getText().toString()).apply();
+
+                            }
+                        });
+                        //               }
+
+                    }
+                }).start();
             }
-        }).start();
+            else
+                clearprog();
 
+        }catch (Exception e){
+
+        }
+    }
+
+    public void clearprog(){
+        counter = 0;
+        bar.setMax(0);
+        bar.setProgress(0);
+        text.setText(counter +"/"+ bar.getMax());
+        edit.remove("pbar");
+        edit.remove("maxx");
+        edit.remove("prog");
+        edit.apply();
     }
 
 }
+
 

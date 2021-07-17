@@ -21,6 +21,7 @@ public class Savings extends AppCompatActivity {
         FloatingActionButton savings = findViewById(R.id.addsaving_button);
         Switch sm = findViewById(R.id.saving_switch);
 
+
         SharedPreferences sharedPreferences =getSharedPreferences("save1",MODE_PRIVATE);
         sm.setChecked(sharedPreferences.getBoolean("value1",true));
 
@@ -29,7 +30,6 @@ public class Savings extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getSupportFragmentManager().beginTransaction().add(R.id.savings_fragment, new add_savings()).commit();
-
             }
         });
 
