@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swiperefreshex"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".expense_list">
-
+    android:layout_height="match_parent">
     <ListView
         android:id="@+id/expense_category"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:dividerHeight="1dp" />
-</FrameLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

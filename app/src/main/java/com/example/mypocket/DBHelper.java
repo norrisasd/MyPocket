@@ -378,10 +378,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return check;
     }
-    public ArrayList<String> getExpenseCategory(){
+    public ArrayList<String> getExpenseCategory(String user){
         ArrayList<String> expenselist =new ArrayList<>();
-        String query =" SELECT CATEGORY FROM ECATEGORY_TABLE\n";
-//                +" WHERE USERNAME='" + user + "'";
+        String query =" SELECT CATEGORY FROM ECATEGORY_TABLE\n"
+                +" WHERE USERNAME='" + user + "'"+"ORDER BY CATEGORY asc";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         if(cursor.moveToFirst()){
@@ -391,10 +391,10 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return expenselist;
     }
-    public ArrayList<String> getIncomeCategory(){
+    public ArrayList<String> getIncomeCategory(String user){
         ArrayList<String> incomelist =new ArrayList<>();
-        String query =" SELECT CATEGORY FROM ICATEGORY_TABLE\n";
-//                +" WHERE USERNAME='" + user + "'";
+        String query =" SELECT CATEGORY FROM ICATEGORY_TABLE\n"
+                +" WHERE USERNAME='" + user + "'"+"ORDER BY CATEGORY asc";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         if(cursor.moveToFirst()){
@@ -403,5 +403,21 @@ public class DBHelper extends SQLiteOpenHelper {
             while(cursor.moveToNext());
         }
         return incomelist;
+    }
+    public void DeleteIncomeTransaction(String user, int id){
+        String query = "DELETE FROM INCOME_TABLE WHERE INCOME_ID ='"+id+"' AND USERNAME ='"+user+"'" ;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+    }
+    public void DefaultExpenseCategories() {
+        String query = "INSERT INTO ECATEGORY_TABLE(USERNAME,CATEGORY)\n" +
+                "VALUES((SELECT USERNAME FROM USER_TABLE),'Bills'), ((SELECT USERNAME FROM USER_TABLE),'Child Care'),((SELECT USERNAME FROM USER_TABLE),'Clothing'),((SELECT USERNAME FROM USER_TABLE),'Food')," +
+                "((SELECT USERNAME FROM USER_TABLE),'Fun'),((SELECT USERNAME FROM USER_TABLE),'Health Care'), ((SELECT USERNAME FROM USER_TABLE),'Home Supplies')," +
+                "((SELECT USERNAME FROM USER_TABLE),'Insurance'),((SELECT USERNAME FROM USER_TABLE),'Pets'),((SELECT USERNAME FROM USER_TABLE),'Personal Care')," +
+                "((SELECT USERNAME FROM USER_TABLE),'Transportation'),((SELECT USERNAME FROM USER_TABLE),'Taxes')";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
     }
 }

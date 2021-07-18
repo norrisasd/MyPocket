@@ -81,9 +81,19 @@ public class Transaction_details extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        // When the user click yes button
-                        // then app will close
-                        finish();
+                        if(check.equals("income")){
+//                            EditIncomeTransaction();
+                            Intent intent = new Intent(getApplicationContext(), income_edit_transaction.class);
+                            startActivity(intent);
+                        }
+
+                        else if(check.equals("savings")){
+                            //DELETE FOR SAVINGS
+                        }
+                        else{
+                            //DELETE FOR EXPENSES
+                        }
+
                     }
                 });
 
@@ -91,9 +101,16 @@ public class Transaction_details extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
+                        if(check.equals("income")){
+                            //DELETE FOR INCOME
+                        }
 
-                        // If user click no
-                        // then dialog box is canceled.
+                         else if(check.equals("savings")){
+                            //DELETE FOR SAVINGS
+                        }
+                         else
+                             //DELETE FOR EXPENSES
+
                         dialog.cancel();
                     }
                 });
@@ -105,4 +122,29 @@ public class Transaction_details extends AppCompatActivity {
             }
         });
     }
+
+//    public void EditIncomeTransaction(){
+//        LayoutInflater inflater = Transaction_details.this.getLayoutInflater();
+//        View v = inflater.inflate(R.layout.income_edit_transaction,null);
+//        EditText icategory = v.findViewById(R.id.income_transaction);
+//        String user = getIntent().getStringExtra("user");
+//
+//        AlertDialog.Builder builderinc = new AlertDialog.Builder(this);
+//        builderinc.setView(v)
+//                .setTitle("Edit Income Transaction")
+//                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.cancel();
+//                    }
+//                })
+//                .setPositiveButton("APPLY", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        //CALL UPDATE DATABASE
+//                    }
+//                });
+//        AlertDialog alertDialog1 = builderinc.create();
+//        alertDialog1.show();
+//    }
 }

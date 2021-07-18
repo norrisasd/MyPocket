@@ -25,6 +25,8 @@ public class Categories extends AppCompatActivity{
     EditText icategory;
     DBHelper db;
     String user;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +36,7 @@ public class Categories extends AppCompatActivity{
         RadioButton income= (RadioButton) findViewById(R.id.cat_income_rad);
         FloatingActionButton add = findViewById(R.id.categorry_button);
         db = new DBHelper(getApplicationContext());
-
+        db.DefaultExpenseCategories();
 
         expense.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -173,6 +175,7 @@ public class Categories extends AppCompatActivity{
                             else{
                                 text.setText(inccategory);
                                 AddIncomeCategory();
+                                dialog.dismiss();
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -184,6 +187,7 @@ public class Categories extends AppCompatActivity{
     }
 //database
     public void AddIncomeCategory(){
+        db = new DBHelper(getApplicationContext());
         boolean check = db.createICategory(user,icategory.getText().toString());
         if(check){
             Toast.makeText(getApplicationContext(), "Added", Toast.LENGTH_SHORT).show();
