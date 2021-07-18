@@ -1,26 +1,25 @@
 package com.example.mypocket;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class Billings extends AppCompatActivity {
+public class expense_edit_transaction extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_billings);
+        setContentView(R.layout.activity_expense_edit_transaction);
 
-        Button addb = findViewById(R.id.add_bills_button);
 
-        addb.setOnClickListener(new View.OnClickListener() {
+        Button applyex = findViewById(R.id.expense_edit_button);
+
+        applyex.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplication(), add_bills.class);
-                startActivity(intent);
+                finish();
             }
         });
     }

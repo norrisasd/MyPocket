@@ -35,8 +35,8 @@ public class Categories extends AppCompatActivity{
         RadioButton expense= (RadioButton) findViewById(R.id.cat_expense_rad);
         RadioButton income= (RadioButton) findViewById(R.id.cat_income_rad);
         FloatingActionButton add = findViewById(R.id.categorry_button);
-        db = new DBHelper(getApplicationContext());
-        db.DefaultExpenseCategories();
+//        db = new DBHelper(getApplicationContext());
+//        db.DefaultExpenseCategories();
 
         expense.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

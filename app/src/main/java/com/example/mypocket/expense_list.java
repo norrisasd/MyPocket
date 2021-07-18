@@ -1,12 +1,16 @@
 package com.example.mypocket;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -49,7 +53,63 @@ public class expense_list extends Fragment {
             }
         });
 
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
+                builder1.setTitle("Expense Category");
+                builder1.setMessage("\nCategory diri");
+
+                builder1.setPositiveButton("EDIT", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        EditExpenseCategory();
+                    }
+                });
+
+                builder1.setNegativeButton("DELETE", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        //CALL DELETE DATABASE
+                        dialog.cancel();
+                    }
+                });
+
+                AlertDialog alertDialog = builder1.create();
+                alertDialog.show();
+
+
+            }
+        });
+
+
         return view;
     }
+    public void EditExpenseCategory(){
+        LayoutInflater inflater = expense_list.this.getLayoutInflater();
+        View v = inflater.inflate(R.layout.expense_edit_category,null);
+        EditText ecategory = v.findViewById(R.id.eedit);
+        String user = getActivity().getIntent().getStringExtra("user");
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(v)
+                .setTitle("Edit Expense Category")
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .setPositiveButton("APPLY", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //CALL UPDATE DATABASE
+                    }
+                });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
 }

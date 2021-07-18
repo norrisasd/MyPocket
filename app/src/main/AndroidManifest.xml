@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyPocket">
-        <activity android:name=".income_edit_transaction"></activity>
+        <activity android:name=".add_bills"></activity>
+        <activity android:name=".savings_edit_transaction" />
+        <activity android:name=".expense_edit_transaction" />
+        <activity android:name=".income_edit_transaction" />
         <activity android:name=".Categories" />
         <activity android:name=".Transaction_details" />
         <activity android:name=".Billings" />

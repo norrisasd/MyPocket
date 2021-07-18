@@ -88,10 +88,12 @@ public class Transaction_details extends AppCompatActivity {
                         }
 
                         else if(check.equals("savings")){
-                            //DELETE FOR SAVINGS
+                            Intent intent = new Intent(getApplicationContext(), savings_edit_transaction.class);
+                            startActivity(intent);
                         }
                         else{
-                            //DELETE FOR EXPENSES
+                            Intent intent = new Intent(getApplicationContext(), expense_edit_transaction.class);
+                            startActivity(intent);
                         }
 
                     }

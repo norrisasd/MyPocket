@@ -18,7 +18,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView33" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/income_edit_notes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
@@ -30,23 +30,23 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView32"
-        app:layout_constraintTop_toBottomOf="@+id/spinner2" />
+        app:layout_constraintTop_toBottomOf="@+id/income_edit_spinner" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName5"
+        android:id="@+id/income_edit_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="62dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Name"
-        app:layout_constraintBottom_toTopOf="@+id/spinner2"
+        app:layout_constraintBottom_toTopOf="@+id/income_edit_spinner"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/spinner2"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName6" />
+        app:layout_constraintStart_toStartOf="@+id/income_edit_spinner"
+        app:layout_constraintTop_toBottomOf="@+id/income_edit_amount" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName6"
+        android:id="@+id/income_edit_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="72dp"
@@ -55,9 +55,10 @@
         android:ems="10"
         android:hint="0.00"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/editTextTextPersonName5"
+        app:layout_constraintBottom_toTopOf="@+id/income_edit_date"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName5"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/income_edit_date"
         app:layout_constraintTop_toBottomOf="@+id/textView39" />
 
     <TextView
@@ -76,7 +77,7 @@
         android:id="@+id/textView33"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="55dp"
+        android:layout_marginStart="56dp"
         android:layout_marginTop="148dp"
         android:layout_marginBottom="57dp"
         android:text="Amount"
@@ -98,30 +99,31 @@
         app:layout_constraintTop_toBottomOf="@+id/textView31" />
 
     <Spinner
-        android:id="@+id/spinner2"
+        android:id="@+id/income_edit_spinner"
         android:layout_width="210dp"
         android:layout_height="36dp"
         android:layout_marginTop="43dp"
         android:layout_marginEnd="61dp"
         android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/editTextTextPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/income_edit_notes"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName5" />
+        app:layout_constraintStart_toStartOf="@+id/income_edit_notes"
+        app:layout_constraintTop_toBottomOf="@+id/income_edit_date" />
 
     <TextView
         android:id="@+id/textView39"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="114dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="114dp"
         android:text="EDIT INCOME TRANSACTION"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.045" />
+        app:layout_constraintVertical_bias="0.035" />
 
     <Button
         android:id="@+id/edit_income_button"
@@ -135,5 +137,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+        app:layout_constraintTop_toBottomOf="@+id/income_edit_notes" />
 </androidx.constraintlayout.widget.ConstraintLayout>
