@@ -42,19 +42,19 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="233dp"
-        android:layout_height="73dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="133dp"
         android:layout_marginTop="220dp"
         android:layout_marginEnd="132dp"
         android:fontFamily="sans-serif-black"
         android:text="MyPocket"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="#79C17C"
+        android:textColor="#89A68B"
         android:textSize="48sp"
         app:layout_constraintBottom_toTopOf="@+id/username_log"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.555"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -65,11 +65,11 @@
         android:layout_marginStart="39dp"
         android:layout_marginEnd="39dp"
         android:layout_marginBottom="10dp"
-        android:backgroundTint="#468849"
+        android:backgroundTint="#89A68B"
         android:text="SIGN IN"
         app:layout_constraintBottom_toTopOf="@+id/Register_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.571"
+        app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pass_log" />
 
@@ -80,7 +80,7 @@
         android:layout_marginStart="39dp"
         android:layout_marginEnd="39dp"
         android:layout_marginBottom="2dp"
-        android:backgroundTint="#468849"
+        android:backgroundTint="#89A68B"
         android:text="SIGN UP"
         app:layout_constraintBottom_toTopOf="@+id/textView3"
         app:layout_constraintEnd_toEndOf="parent"
@@ -100,5 +100,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Register_button" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="255dp"
+        android:layout_height="208dp"
+        android:layout_marginBottom="44dp"
+        app:layout_constraintBottom_toTopOf="@+id/username_log"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/_626688279591" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,8 +8,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="413dp"
+        android:layout_height="605dp"
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".Register"
         tools:layout_editor_absoluteX="0dp">
@@ -25,7 +25,7 @@
             android:fontFamily="sans-serif-black"
             android:text="MyPocket"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="#468849"
+            android:textColor="#89A68B"
             android:textSize="48sp"
             app:layout_constraintBottom_toTopOf="@+id/first_name"
             app:layout_constraintEnd_toEndOf="parent"
@@ -42,7 +42,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="39dp"
             android:layout_marginBottom="81dp"
-            android:backgroundTint="#468849"
+            android:backgroundTint="#89A68B"
             android:onClick="setRegister"
             android:text="CREATE ACCOUNT"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -129,6 +129,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/reg_pass" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="207dp"
+            android:layout_height="189dp"
+            android:layout_marginBottom="28dp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/_626688279591" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
