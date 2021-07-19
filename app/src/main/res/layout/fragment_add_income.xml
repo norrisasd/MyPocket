@@ -13,7 +13,7 @@
         android:id="@+id/income_date"
         android:layout_width="209dp"
         android:layout_height="46dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="40dp"
         android:text="AutoCompleteTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.727"
@@ -68,23 +68,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="68dp"
         android:layout_marginEnd="57dp"
         android:text="Category"
+        app:layout_constraintBottom_toTopOf="@+id/income_note"
         app:layout_constraintEnd_toStartOf="@+id/income_category"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+        app:layout_constraintTop_toBottomOf="@+id/textView14"
+        app:layout_constraintVertical_bias="0.672" />
 
     <Spinner
         android:id="@+id/income_category"
         android:layout_width="210dp"
         android:layout_height="37dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="60dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.726"
+        app:layout_constraintHorizontal_bias="0.731"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/income_date" />
+        app:layout_constraintTop_toBottomOf="@+id/income_date"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/addincome_button"
@@ -107,20 +110,24 @@
         android:text="Notes"
         app:layout_constraintBottom_toTopOf="@+id/addincome_button"
         app:layout_constraintEnd_toStartOf="@+id/income_note"
+        app:layout_constraintHorizontal_bias="0.481"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView21"
-        app:layout_constraintVertical_bias="0.4" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.765" />
 
     <EditText
         android:id="@+id/income_note"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="60dp"
+        android:layout_marginTop="44dp"
         android:ems="10"
         android:hint="Add Note."
         android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/income_category" />
+        app:layout_constraintHorizontal_bias="0.722"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/income_category"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
