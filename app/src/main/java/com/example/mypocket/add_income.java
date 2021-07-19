@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -28,10 +29,11 @@ public class add_income extends Fragment  {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_add_income, container, false);
-
+        DBHelper db = new DBHelper(getActivity());
         Button addincome = (Button)view.findViewById(R.id.addincome_button);
         EditText incomeamount = (EditText)view.findViewById(R.id.income_amount);
         EditText inote = view.findViewById(R.id.income_note);
+        Intent intent = getActivity().getIntent();
 
         AutoCompleteTextView datein = (AutoCompleteTextView) view.findViewById(R.id.income_date);
         SimpleDateFormat dateN = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault());
@@ -39,7 +41,8 @@ public class add_income extends Fragment  {
         datein.setText(indate);
 
         Spinner icategory = view.findViewById(R.id.income_category);
-        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.inccategory));
+        ArrayList<String> spinnerValues = db.getUserCategories(intent.getStringExtra("user"));
+        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_list_item_1, spinnerValues);
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         icategory.setAdapter(myAdapter);
 

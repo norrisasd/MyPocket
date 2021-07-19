@@ -6,17 +6,26 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
 
@@ -169,6 +178,37 @@ public class Home extends AppCompatActivity {
         });
 
 
+        ImageButton nav = findViewById(R.id.menu_button);
+        DrawerLayout drawerLayout = findViewById(R.id.drawerlayout);
+        NavigationView navigationView =findViewById(R.id.navigationview);
+
+        nav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(Gravity.LEFT);
+                //hamMenu(v);
+                navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
+                        int id = item.getItemId();
+                        if(id == R.id.signout_menu){
+
+                            Toast.makeText(getApplicationContext(), "Empty Field", Toast.LENGTH_SHORT).show();
+//                            Intent intent = new Intent(getApplicationContext(), Categories.class);
+//                            startActivity(intent);
+                        }
+
+
+
+                        drawerLayout.closeDrawer(Gravity.LEFT);
+                        return true;
+                    }
+                });
+            }
+        });
+
+
+
 
     }
 
@@ -217,7 +257,34 @@ public class Home extends AppCompatActivity {
         intent.putExtras(getInt);
         startActivity(intent);
     }
+    public void hamMenu(View view){
+        DrawerLayout drawer = findViewById(R.id.drawerlayout);
+        NavigationView navigationView =findViewById(R.id.navigationview);
+        if (!drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.openDrawer(Gravity.LEFT);
 
+            navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
+                    int id = item.getItemId();
+                    if(id == R.id.signout_menu){
+
+                            Toast.makeText(getApplicationContext(), "Empty Field", Toast.LENGTH_SHORT).show();
+//                            Intent intent = new Intent(getApplicationContext(), Categories.class);
+//                            startActivity(intent);
+                        }
+
+
+
+                    drawer.closeDrawer(Gravity.LEFT);
+                    return true;
+                }
+            });
+        }
+//        else {
+//            drawer.closeDrawer(GravityCompat.START);
+//        }
+    }
 
 
 }

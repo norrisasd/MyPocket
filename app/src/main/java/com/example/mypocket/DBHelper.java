@@ -71,6 +71,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
         String createICategory = "CREATE TABLE " + ICATEGORY_TABLE + " (" + ICAT_ID + " INTEGER PRIMARY KEY, " + USERNAME + " TEXT, "  + ICATEGORY + " TEXT )";
         db.execSQL(createICategory);
+
+        String createExpenseDefaultCategory = "INSERT INTO ECATEGORY_TABLE(CATEGORY)\n" +
+                "VALUES('Bills'), ('Child Care'),('Clothing'),('Food')," +
+                "('Fun'),('Health Care'), ('Home Supplies')," +
+                "('Insurance'),('Pets'),('Personal Care')," +
+                "('Transportation'),('Taxes')";
+        db.execSQL(createExpenseDefaultCategory);
     }
 
     @Override
@@ -405,19 +412,48 @@ public class DBHelper extends SQLiteOpenHelper {
         return incomelist;
     }
     public void DeleteIncomeTransaction(String user, int id){
-        String query = "DELETE FROM INCOME_TABLE WHERE INCOME_ID ='"+id+"' AND USERNAME ='"+user+"'" ;
+        String query = "DELETE FROM INCOME_TABLE WHERE INCOME_ID ='"+id+"' AND USERNAME ='"+user+"'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
     }
-    public void DefaultExpenseCategories() {
-        String query = "INSERT INTO ECATEGORY_TABLE(USERNAME,CATEGORY)\n" +
-                "VALUES((SELECT USERNAME FROM USER_TABLE),'Bills'), ((SELECT USERNAME FROM USER_TABLE),'Child Care'),((SELECT USERNAME FROM USER_TABLE),'Clothing'),((SELECT USERNAME FROM USER_TABLE),'Food')," +
-                "((SELECT USERNAME FROM USER_TABLE),'Fun'),((SELECT USERNAME FROM USER_TABLE),'Health Care'), ((SELECT USERNAME FROM USER_TABLE),'Home Supplies')," +
-                "((SELECT USERNAME FROM USER_TABLE),'Insurance'),((SELECT USERNAME FROM USER_TABLE),'Pets'),((SELECT USERNAME FROM USER_TABLE),'Personal Care')," +
-                "((SELECT USERNAME FROM USER_TABLE),'Transportation'),((SELECT USERNAME FROM USER_TABLE),'Taxes')";
+    public boolean updateIncomeTransaction(int id,double amount,String category, String date, String note){
+        boolean check = true;
+        String query ="UPDATE INCOME_TABLE SET DATE ='"+date+"', CATEGORY ='"+category+"',NOTES ='"+note+"',AMOUNT ="+amount+" WHERE INCOME_ID = "+id+"";
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        cursor.moveToFirst();
+        db.execSQL(query);
+        return check;
     }
+    public void deleteExpenseCategory(String user,String category){
+        String query = "DELETE FROM ECATEGORY_TABLE WHERE USERNAME ='"+user+"' AND CATEGORY ='"+category+"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.execSQL(query);
+    }
+    public void updateExpenseCategory(String user,String category,String prevCategory){
+        String query = "UPDATE ECATEGORY_TABLE SET CATEGORY ='"+category+"' WHERE USERNAME ='"+user+"' AND CATEGORY ='"+prevCategory+"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.execSQL(query);
+    }
+    public ArrayList<String> getUserCategories(String user){//expense spinner
+        ArrayList<String> result = new ArrayList<>();
+        String query = "SELECT * FROM ECATEGORY_TABLE WHERE USERNAME IS NULL OR USERNAME = '"+user+"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do{
+                result.add(cursor.getString(2));
+            }while(cursor.moveToNext());
+        }
+        return result;
+    }
+//    public void defaultExpenseCategories() {
+//        String query = "INSERT INTO ECATEGORY_TABLE(CATEGORY)\n" +
+//                "VALUES('Bills', ('Child Care'),('Clothing'),('Food')," +
+//                "('Fun'),('Health Care'), ('Home Supplies')," +
+//                "('Insurance'),('Pets'),('Personal Care')," +
+//                "('Transportation'),('Taxes'))";
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        Cursor cursor = db.rawQuery(query, null);
+//        cursor.moveToFirst();
+//    }
 }

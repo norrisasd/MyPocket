@@ -84,15 +84,21 @@ public class Transaction_details extends AppCompatActivity {
                         if(check.equals("income")){
 //                            EditIncomeTransaction();
                             Intent intent = new Intent(getApplicationContext(), income_edit_transaction.class);
+                            intent.putExtra("position",arrayID.get(position));
+                            intent.putExtras(getIntent());
                             startActivity(intent);
                         }
 
                         else if(check.equals("savings")){
                             Intent intent = new Intent(getApplicationContext(), savings_edit_transaction.class);
+                            intent.putExtra("position",arrayID.get(position));
+                            intent.putExtras(getIntent());
                             startActivity(intent);
                         }
                         else{
                             Intent intent = new Intent(getApplicationContext(), expense_edit_transaction.class);
+                            intent.putExtra("position",arrayID.get(position));
+                            intent.putExtras(getIntent());
                             startActivity(intent);
                         }
 
@@ -105,6 +111,8 @@ public class Transaction_details extends AppCompatActivity {
                     {
                         if(check.equals("income")){
                             //DELETE FOR INCOME
+                            db.DeleteIncomeTransaction(user,arrayID.get(position));
+                            arrayAdapter.notifyDataSetChanged();
                         }
 
                          else if(check.equals("savings")){

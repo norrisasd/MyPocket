@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
@@ -33,7 +34,6 @@ public class expense_list extends Fragment {
         String user = getActivity().getIntent().getStringExtra("user");
         View view = inflater.inflate(R.layout.fragment_expense_list, container, false);
         SwipeRefreshLayout refresh = view.findViewById(R.id.swiperefreshex);
-
         ListView list = view.findViewById(R.id.expense_category);
         DBHelper db = new DBHelper(getActivity().getApplicationContext());
         expenselist = db.getExpenseCategory(user);
@@ -51,6 +51,7 @@ public class expense_list extends Fragment {
                 refresh.setRefreshing(false);
 
             }
+
         });
 
 
@@ -58,14 +59,15 @@ public class expense_list extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
+                String category=expenselist.get(position);
                 builder1.setTitle("Expense Category");
-                builder1.setMessage("\nCategory diri");
+                builder1.setMessage("\n"+category);
 
                 builder1.setPositiveButton("EDIT", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        EditExpenseCategory();
+                        EditExpenseCategory(category);
                     }
                 });
 
@@ -74,6 +76,8 @@ public class expense_list extends Fragment {
                     public void onClick(DialogInterface dialog, int which)
                     {
                         //CALL DELETE DATABASE
+                        db.deleteExpenseCategory(user,category);
+                        Toast.makeText(getActivity(), "Deleted", Toast.LENGTH_SHORT).show();
                         dialog.cancel();
                     }
                 });
@@ -88,10 +92,12 @@ public class expense_list extends Fragment {
 
         return view;
     }
-    public void EditExpenseCategory(){
+    public void EditExpenseCategory(String prevCategory){
         LayoutInflater inflater = expense_list.this.getLayoutInflater();
         View v = inflater.inflate(R.layout.expense_edit_category,null);
         EditText ecategory = v.findViewById(R.id.eedit);
+        ecategory.setText(prevCategory);
+        DBHelper db = new DBHelper(getActivity());
         String user = getActivity().getIntent().getStringExtra("user");
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -107,6 +113,8 @@ public class expense_list extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //CALL UPDATE DATABASE
+                        db.updateExpenseCategory(user,ecategory.getText().toString(),prevCategory);
+                        Toast.makeText(getActivity(), "Updated", Toast.LENGTH_SHORT).show();
                     }
                 });
         AlertDialog alertDialog = builder.create();
