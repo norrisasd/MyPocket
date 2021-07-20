@@ -10,6 +10,7 @@
         android:id="@+id/constraintLayout2"
         android:layout_width="413dp"
         android:layout_height="605dp"
+        android:background="#EBF8EC"
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".Register"
         tools:layout_editor_absoluteX="0dp">

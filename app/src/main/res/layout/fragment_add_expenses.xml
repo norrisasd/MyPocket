@@ -9,11 +9,14 @@
 
     <TextView
         android:id="@+id/textView15"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
         android:layout_marginBottom="63dp"
         android:text="Amount"
+        android:textAlignment="center"
+        android:textColor="#372E29"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/et_amount"
         app:layout_constraintHorizontal_bias="0.095"
@@ -49,31 +52,36 @@
 
     <TextView
         android:id="@+id/textView16"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="53dp"
         android:layout_marginEnd="66dp"
         android:text="Date "
+        android:textAlignment="center"
+        android:textColor="#372E29"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/date_text"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.406"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView15"
-        app:layout_constraintVertical_bias="0.128" />
+        app:layout_constraintVertical_bias="0.154" />
 
     <TextView
         android:id="@+id/textView17"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="57dp"
+        android:layout_marginEnd="44dp"
         android:text="Category"
+        android:textAlignment="center"
+        android:textColor="#372E29"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/expense_note"
         app:layout_constraintEnd_toStartOf="@+id/expense_category"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.93"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView16"
-        app:layout_constraintVertical_bias="0.672" />
+        app:layout_constraintVertical_bias="0.639" />
 
     <Spinner
         android:id="@+id/expense_category"
@@ -89,15 +97,17 @@
 
     <TextView
         android:id="@+id/textView19"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
         android:text="Notes"
-        app:layout_constraintBottom_toTopOf="@+id/addexpense_button"
+        android:textAlignment="center"
+        android:textColor="#372E29"
+        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/expense_note"
-        app:layout_constraintHorizontal_bias="0.481"
+        app:layout_constraintHorizontal_bias="0.465"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.77" />
+        app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
     <Button
         android:id="@+id/addexpense_button"
@@ -120,7 +130,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
         android:ems="10"
-        android:hint="Add note."
+        android:hint="Add Note"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

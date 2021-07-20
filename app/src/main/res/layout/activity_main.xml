@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#EBF8EC"
     tools:context=".MainActivity">
 
 
@@ -96,6 +97,7 @@
         android:layout_marginEnd="123dp"
         android:layout_marginBottom="138dp"
         android:text="Don't have an account yet?"
+        android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
