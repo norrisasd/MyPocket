@@ -35,7 +35,7 @@ public class income_edit_transaction extends AppCompatActivity {
         amount.setText(Double.toString(cursor.getDouble(5)));
         date.setText(cursor.getString(2));
         note.setText(cursor.getString(4));
-        ArrayList<String> spinnerValues = db.getUserCategories(user);
+        ArrayList<String> spinnerValues = db.getUserIncomeCategories(user);
         ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, spinnerValues);
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         category.setAdapter(myAdapter);
@@ -50,6 +50,11 @@ public class income_edit_transaction extends AppCompatActivity {
                 }else{
                     Toast.makeText(income_edit_transaction.this, "Error", Toast.LENGTH_SHORT).show();
                 }
+                Intent intent = new Intent(getApplication(), Transaction_details.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtras(getIntent());
+                intent.removeExtra("position");
+                startActivity(intent);
                 finish();
             }
         });

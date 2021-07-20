@@ -47,6 +47,12 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String ICAT_ID = "ICATEGORY_ID";
     private static final String ICATEGORY = "CATEGORY";
 
+    private static final String BILLS_TABLE = "BILLS_TABLE";
+    private static final String BILLS_ID = "BILLS_ID";
+    private static final String COMPANY = "COMPANY";
+    private static final String BAMOUNT = "AMOUNT";
+    private static final String BDATE = "DUEDATE";
+
     public DBHelper(@Nullable Context context) {
         super(context, "expensetracker.db", null, 1);
     }
@@ -72,12 +78,20 @@ public class DBHelper extends SQLiteOpenHelper {
         String createICategory = "CREATE TABLE " + ICATEGORY_TABLE + " (" + ICAT_ID + " INTEGER PRIMARY KEY, " + USERNAME + " TEXT, "  + ICATEGORY + " TEXT )";
         db.execSQL(createICategory);
 
+        String createBills= "CREATE TABLE " + BILLS_TABLE + " (" + BILLS_ID + " INTEGER PRIMARY KEY, " + USERNAME + " TEXT, " + BDATE + " TEXT, " + COMPANY + " TEXT, " + BAMOUNT + " REAL )";
+        db.execSQL(createBills);
+
         String createExpenseDefaultCategory = "INSERT INTO ECATEGORY_TABLE(CATEGORY)\n" +
-                "VALUES('Bills'), ('Child Care'),('Clothing'),('Food')," +
+                "VALUES('Bills'), ('Child Care'),('Clothing'),('Education'),('Food')," +
                 "('Fun'),('Health Care'), ('Home Supplies')," +
                 "('Insurance'),('Pets'),('Personal Care')," +
                 "('Transportation'),('Taxes')";
         db.execSQL(createExpenseDefaultCategory);
+
+        String createIncomeDefaultCategory = "INSERT INTO ICATEGORY_TABLE(CATEGORY)\n" +
+                "VALUES ('Aid'),('Asset'),('Allowance'),('Business'),('Commissions'),('Inheritance'),('Pension')," +
+                "('Remittances'),('Rental'),('Salary'),('Stock Dividends'),('Talent Fee')";
+        db.execSQL(createIncomeDefaultCategory);
     }
 
     @Override
@@ -385,34 +399,21 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return check;
     }
-    public ArrayList<String> getExpenseCategory(String user){
-        ArrayList<String> expenselist =new ArrayList<>();
-        String query =" SELECT CATEGORY FROM ECATEGORY_TABLE\n"
-                +" WHERE USERNAME='" + user + "'"+"ORDER BY CATEGORY asc";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        if(cursor.moveToFirst()){
-            do
-            expenselist.add(cursor.getString(0));
-            while(cursor.moveToNext());
-        }
-        return expenselist;
-    }
-    public ArrayList<String> getIncomeCategory(String user){
-        ArrayList<String> incomelist =new ArrayList<>();
-        String query =" SELECT CATEGORY FROM ICATEGORY_TABLE\n"
-                +" WHERE USERNAME='" + user + "'"+"ORDER BY CATEGORY asc";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        if(cursor.moveToFirst()){
-            do
-                incomelist.add(cursor.getString(0));
-            while(cursor.moveToNext());
-        }
-        return incomelist;
-    }
+
     public void DeleteIncomeTransaction(String user, int id){
         String query = "DELETE FROM INCOME_TABLE WHERE INCOME_ID ='"+id+"' AND USERNAME ='"+user+"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+    }
+    public void DeleteExpenseTransaction(String user, int id){
+        String query = "DELETE FROM EXPENSE_TABLE WHERE EXPENSE_ID ='"+id+"' AND USERNAME ='"+user+"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+    }
+    public void DeleteSavingsTransaction(String user, int id){
+        String query = "DELETE FROM SAVINGS_TABLE WHERE SAVINGS_ID ='"+id+"' AND USERNAME ='"+user+"'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
@@ -424,8 +425,29 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(query);
         return check;
     }
+    public boolean updateExpenseTransaction(int id,double amount,String category, String date, String note){
+        boolean check = true;
+        String query ="UPDATE EXPENSE_TABLE SET DATE ='"+date+"', CATEGORY ='"+category+"',NOTES ='"+note+"',AMOUNT ="+amount+" WHERE EXPENSE_ID = "+id+"";
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.execSQL(query);
+        return check;
+    }
+    public boolean updateSavingsTransaction(int id,double amount, String date, String note){
+        boolean check = true;
+        String query ="UPDATE SAVINGS_TABLE SET DATE ='"+date+"',NOTES ='"+note+"',AMOUNT ="+amount+" WHERE SAVINGS_ID = "+id+"";
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.execSQL(query);
+        return check;
+    }
+//CATEGORIES
+
     public void deleteExpenseCategory(String user,String category){
         String query = "DELETE FROM ECATEGORY_TABLE WHERE USERNAME ='"+user+"' AND CATEGORY ='"+category+"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.execSQL(query);
+    }
+    public void deleteIncomeCategory(String user,String category){
+        String query = "DELETE FROM ICATEGORY_TABLE WHERE USERNAME ='"+user+"' AND CATEGORY ='"+category+"'";
         SQLiteDatabase db = this.getReadableDatabase();
         db.execSQL(query);
     }
@@ -434,9 +456,14 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         db.execSQL(query);
     }
+    public void updateIncomeCategory(String user,String category,String inccategory){
+        String query = "UPDATE ICATEGORY_TABLE SET CATEGORY ='"+category+"' WHERE USERNAME ='"+user+"' AND CATEGORY ='"+inccategory+"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.execSQL(query);
+    }
     public ArrayList<String> getUserCategories(String user){//expense spinner
         ArrayList<String> result = new ArrayList<>();
-        String query = "SELECT * FROM ECATEGORY_TABLE WHERE USERNAME IS NULL OR USERNAME = '"+user+"'";
+        String query = "SELECT * FROM ECATEGORY_TABLE WHERE USERNAME IS NULL OR USERNAME = '"+user+"'"+"ORDER BY CATEGORY asc";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query,null);
         if(cursor.moveToFirst()){
@@ -446,6 +473,82 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return result;
     }
+    public ArrayList<String> getUserIncomeCategories(String user){//expense spinner
+        ArrayList<String> result = new ArrayList<>();
+        String query = "SELECT * FROM ICATEGORY_TABLE WHERE USERNAME IS NULL OR USERNAME = '"+user+"'"+"ORDER BY CATEGORY asc";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do{
+                result.add(cursor.getString(2));
+            }while(cursor.moveToNext());
+        }
+        return result;
+    }
+
+    public boolean createBills(double amount, String user, String date, String company) {
+        boolean check = false;
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(BDATE, date);
+        cv.put(COMPANY, company);
+        cv.put(USERNAME, user);
+        cv.put(BAMOUNT, amount);
+        long insert = db.insert(BILLS_TABLE, null, cv);
+        if (insert == -1) {
+            check = false;
+        } else
+            check = true;
+
+        return check;
+    }
+    public ArrayList<String> getBillsCompany(String user){
+        ArrayList<String> result = new ArrayList<>();
+        String query = "SELECT COMPANY FROM BILLS_TABLE WHERE USERNAME = '"+user+"'"+"ORDER BY COMPANY asc";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do{
+                result.add(cursor.getString(0));
+            }while(cursor.moveToNext());
+        }
+        return result;
+    }
+    public Cursor getBillsInfoByID(String user,int id){
+        String query =" SELECT * FROM BILLS_TABLE\n" +
+                "WHERE BILLS_ID = '"+id+"' AND USERNAME = '"+user+"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+        return cursor;
+    }
+    public ArrayList<Integer> getBillsID(String user){
+        ArrayList<Integer> id =new ArrayList<>();
+        String query =" SELECT BILLS_ID FROM BILLS_TABLE\n" +
+                "WHERE USERNAME = '"+user+"'"+"ORDER BY COMPANY asc";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()){
+            do{
+                id.add(cursor.getInt(0));
+            }while(cursor.moveToNext());
+        }
+        return id;
+    }
+    public void deleteBills(String user, int id){
+        String query = "DELETE FROM BILLS_TABLE WHERE BILLS_ID ='"+id+"' AND USERNAME ='"+user+"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.execSQL(query);
+    }
+    public boolean updateBillsTransaction(int id,double amount, String date, String company){
+        boolean check = true;
+        String query ="UPDATE BILLS_TABLE SET DUEDATE ='"+date+"',COMPANY ='"+company+"',AMOUNT ="+amount+" WHERE BILLS_ID = "+id+"";
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.execSQL(query);
+        return check;
+    }
+
+
 //    public void defaultExpenseCategories() {
 //        String query = "INSERT INTO ECATEGORY_TABLE(CATEGORY)\n" +
 //                "VALUES('Bills', ('Child Care'),('Clothing'),('Food')," +
@@ -455,5 +558,31 @@ public class DBHelper extends SQLiteOpenHelper {
 //        SQLiteDatabase db = this.getReadableDatabase();
 //        Cursor cursor = db.rawQuery(query, null);
 //        cursor.moveToFirst();
+//    }
+//public ArrayList<String> getExpenseCategory(String user){
+//    ArrayList<String> expenselist =new ArrayList<>();
+//    String query =" SELECT CATEGORY FROM ECATEGORY_TABLE\n"
+//            +" WHERE USERNAME='" + user + "'"+"ORDER BY CATEGORY asc";
+//    SQLiteDatabase db = this.getReadableDatabase();
+//    Cursor cursor = db.rawQuery(query, null);
+//    if(cursor.moveToFirst()){
+//        do
+//            expenselist.add(cursor.getString(0));
+//        while(cursor.moveToNext());
+//    }
+//    return expenselist;
+//}
+//    public ArrayList<String> getIncomeCategory(String user){
+//        ArrayList<String> incomelist =new ArrayList<>();
+//        String query =" SELECT CATEGORY FROM ICATEGORY_TABLE\n"
+//                +" WHERE USERNAME='" + user + "'"+"ORDER BY CATEGORY asc";
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        Cursor cursor = db.rawQuery(query, null);
+//        if(cursor.moveToFirst()){
+//            do
+//                incomelist.add(cursor.getString(0));
+//            while(cursor.moveToNext());
+//        }
+//        return incomelist;
 //    }
 }

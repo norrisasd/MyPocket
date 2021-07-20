@@ -86,6 +86,7 @@ public class Transaction_details extends AppCompatActivity {
                             Intent intent = new Intent(getApplicationContext(), income_edit_transaction.class);
                             intent.putExtra("position",arrayID.get(position));
                             intent.putExtras(getIntent());
+                            //intent.putExtra("incdeets",getIntent());
                             startActivity(intent);
                         }
 
@@ -112,14 +113,19 @@ public class Transaction_details extends AppCompatActivity {
                         if(check.equals("income")){
                             //DELETE FOR INCOME
                             db.DeleteIncomeTransaction(user,arrayID.get(position));
-                            arrayAdapter.notifyDataSetChanged();
+                            startActivity(getIntent().addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).putExtras(getIntent()));
                         }
 
                          else if(check.equals("savings")){
                             //DELETE FOR SAVINGS
+                            db.DeleteSavingsTransaction(user,arrayID.get(position));
+                            startActivity(getIntent().addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).putExtras(getIntent()));
                         }
                          else
-                             //DELETE FOR EXPENSES
+                            //DELETE FOR EXPENSES
+                            db.DeleteExpenseTransaction(user,arrayID.get(position));
+                            startActivity(getIntent().addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).putExtras(getIntent()));
+
 
                         dialog.cancel();
                     }
@@ -133,7 +139,7 @@ public class Transaction_details extends AppCompatActivity {
         });
     }
 
-//    public void EditIncomeTransaction(){
+    //    public void EditIncomeTransaction(){
 //        LayoutInflater inflater = Transaction_details.this.getLayoutInflater();
 //        View v = inflater.inflate(R.layout.income_edit_transaction,null);
 //        EditText icategory = v.findViewById(R.id.income_transaction);

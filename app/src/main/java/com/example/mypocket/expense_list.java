@@ -34,9 +34,10 @@ public class expense_list extends Fragment {
         String user = getActivity().getIntent().getStringExtra("user");
         View view = inflater.inflate(R.layout.fragment_expense_list, container, false);
         SwipeRefreshLayout refresh = view.findViewById(R.id.swiperefreshex);
+
         ListView list = view.findViewById(R.id.expense_category);
         DBHelper db = new DBHelper(getActivity().getApplicationContext());
-        expenselist = db.getExpenseCategory(user);
+        expenselist = db.getUserCategories(user);
         ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity().getApplicationContext(),android.R.layout.simple_list_item_1,android.R.id.text1,expenselist);
         arrayAdapter.notifyDataSetChanged();
         list.setAdapter(arrayAdapter);
@@ -44,7 +45,7 @@ public class expense_list extends Fragment {
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                expenselist = db.getExpenseCategory(user);
+                expenselist = db.getUserCategories(user);
                 ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity().getApplicationContext(),android.R.layout.simple_list_item_1,android.R.id.text1,expenselist);
                 arrayAdapter.notifyDataSetChanged();
                 list.setAdapter(arrayAdapter);

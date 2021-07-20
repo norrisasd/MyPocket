@@ -125,7 +125,7 @@ public class Categories extends AppCompatActivity{
                                 Toast.makeText(getApplicationContext(), "Empty Field", Toast.LENGTH_SHORT).show();
                             }
                             else{
-                                Toast.makeText(getApplicationContext(), "GOOOOOD", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Added", Toast.LENGTH_SHORT).show();
                                 text.setText(expcategory);
                                 AddExpenseCategory();
                             }

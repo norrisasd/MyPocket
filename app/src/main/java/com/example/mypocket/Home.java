@@ -49,15 +49,15 @@ public class Home extends AppCompatActivity {
         try{
             double total = db.getTotalExpenses(getIntent().getStringExtra("user"));
             TextView expense = findViewById(R.id.expense);
-            expense.setText(df4.format(getIntent().getExtras().getDouble("total")));
+            expense.setText(df4.format(total));
 
             double totalinc = db.getTotalIncome(getIntent().getStringExtra("user"));
             TextView income = findViewById(R.id.income);
-            income.setText(df4.format(getIntent().getExtras().getDouble("totalinc")));
+            income.setText(df4.format(totalinc));
 
             double totals = db.getTotalSavings(getIntent().getStringExtra("user"));
             TextView savings = findViewById(R.id.saving);
-            savings.setText(df4.format(getIntent().getExtras().getDouble("totals")));
+            savings.setText(df4.format(totals));
 
             double bal = totalinc - total;
             TextView balance = findViewById(R.id.bal);
@@ -252,7 +252,7 @@ public class Home extends AppCompatActivity {
     }
 
     public void openBillings(){
-        Intent intent = new Intent(this, Categories.class);
+        Intent intent = new Intent(this, Billings.class);
         Intent getInt = getIntent();
         intent.putExtras(getInt);
         startActivity(intent);

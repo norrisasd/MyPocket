@@ -8,8 +8,10 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 
@@ -31,6 +33,7 @@ public class Transaction extends AppCompatActivity {
         RadioButton expense= (RadioButton) findViewById(R.id.rad_expense_trans);
         RadioButton income= (RadioButton) findViewById(R.id.Income_rad_trans);
         RadioButton savings = findViewById(R.id.rad_savings_trans);
+        SwipeRefreshLayout refreshLayout = findViewById(R.id.swiperefresh_transactionhistory);
 
         expense.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -44,6 +47,15 @@ public class Transaction extends AppCompatActivity {
                     }catch(Exception e){
 
                     }
+                    refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            explist = db.getAllExpenseDates(user);
+                            ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(),android.R.layout.simple_list_item_1,android.R.id.text1,explist);
+                            list.setAdapter(arrayAdapter);
+                            refreshLayout.setRefreshing(false);
+                        }
+                    });
 
                 }
 
@@ -61,6 +73,15 @@ public class Transaction extends AppCompatActivity {
                     }catch(Exception e){
 
                     }
+                    refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            inclist = db.getAllIncomeDates(user);
+                            ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(),android.R.layout.simple_list_item_1,android.R.id.text1,inclist);
+                            list.setAdapter(arrayAdapter);
+                            refreshLayout.setRefreshing(false);
+                        }
+                    });
 
                 }
 
@@ -78,8 +99,27 @@ public class Transaction extends AppCompatActivity {
                     }catch(Exception e){
 
                     }
+                    refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                            savingslist = db.getAllSavingsDates(user);
+                            ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(),android.R.layout.simple_list_item_1,android.R.id.text1,savingslist);
+                            list.setAdapter(arrayAdapter);
+                            refreshLayout.setRefreshing(false);
+
+                        }
+                    });
+
 
                 }
+
+            }
+        });
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Toast.makeText(Transaction.this, "YOU ARE UP TO DATE", Toast.LENGTH_SHORT).show();
+                refreshLayout.setRefreshing(false);
 
             }
         });
@@ -108,5 +148,14 @@ public class Transaction extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(Transaction.this, Home.class);
+        intent.putExtras(getIntent());
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 }

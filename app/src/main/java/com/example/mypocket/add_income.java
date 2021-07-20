@@ -41,7 +41,7 @@ public class add_income extends Fragment  {
         datein.setText(indate);
 
         Spinner icategory = view.findViewById(R.id.income_category);
-        ArrayList<String> spinnerValues = db.getUserCategories(intent.getStringExtra("user"));
+        ArrayList<String> spinnerValues = db.getUserIncomeCategories(intent.getStringExtra("user"));
         ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_list_item_1, spinnerValues);
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         icategory.setAdapter(myAdapter);
@@ -65,7 +65,7 @@ public class add_income extends Fragment  {
                                 Intent getInt = getActivity().getIntent();
                                 double totalinc = db.getTotalIncome(user);
                                 intent.putExtras(getInt);
-                                intent.putExtra("totalinc",totalinc);
+                                //intent.putExtra("totalinc",totalinc);
                                 startActivity(intent);
                                 getActivity().finish();
                             }
@@ -87,8 +87,10 @@ public class add_income extends Fragment  {
                                 Intent intent = new Intent(getActivity(),Home.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 Intent getInt = getActivity().getIntent();
-                                double totalinc = db.getTotalIncome(user);
                                 intent.putExtras(getInt);
+
+                                double totalinc = db.getTotalIncome(user);
+
                                 intent.putExtra("totalinc",totalinc);
                                 startActivity(intent);
                                 getActivity().finish();

@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
@@ -34,7 +35,7 @@ public class income_list extends Fragment {
 
         ListView list = view.findViewById(R.id.income_list);
         DBHelper db = new DBHelper(getActivity().getApplicationContext());
-        incomelist = db.getIncomeCategory(user);
+        incomelist = db.getUserIncomeCategories(user);
         ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity().getApplicationContext(),android.R.layout.simple_list_item_1,android.R.id.text1,incomelist);
         arrayAdapter.notifyDataSetChanged();
         list.setAdapter(arrayAdapter);
@@ -42,7 +43,7 @@ public class income_list extends Fragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                incomelist = db.getIncomeCategory(user);
+                incomelist = db.getUserIncomeCategories(user);
                 ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity().getApplicationContext(),android.R.layout.simple_list_item_1,android.R.id.text1,incomelist);
                 arrayAdapter.notifyDataSetChanged();
                 list.setAdapter(arrayAdapter);
@@ -55,14 +56,15 @@ public class income_list extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
+                String category=incomelist.get(position);
                 builder1.setTitle("Income Category");
-                builder1.setMessage("\nCategory diri");
+                builder1.setMessage("\n"+category);
 
                 builder1.setPositiveButton("EDIT", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        EditIncomeCategory();
+                        EditIncomeCategory(category);
                     }
                 });
 
@@ -71,6 +73,8 @@ public class income_list extends Fragment {
                     public void onClick(DialogInterface dialog, int which)
                     {
                         //CALL DELETE DATABASE
+                        db.deleteIncomeCategory(user,category);
+                        Toast.makeText(getActivity(), "Deleted", Toast.LENGTH_SHORT).show();
                         dialog.cancel();
                     }
                 });
@@ -85,10 +89,12 @@ public class income_list extends Fragment {
         return view;
     }
 
-    public void EditIncomeCategory(){
+    public void EditIncomeCategory(String inccategory){
         LayoutInflater inflater = income_list.this.getLayoutInflater();
         View v = inflater.inflate(R.layout.income_edit_category,null);
         EditText icategory = v.findViewById(R.id.iedit);
+        icategory.setText(inccategory);
+        DBHelper db = new DBHelper(getActivity());
         String user = getActivity().getIntent().getStringExtra("user");
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -104,6 +110,8 @@ public class income_list extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //CALL UPDATE DATABASE
+                        db.updateIncomeCategory(user,icategory.getText().toString(),inccategory);
+                        Toast.makeText(getActivity(), "Updated", Toast.LENGTH_SHORT).show();
                     }
                 });
         AlertDialog alertDialog = builder.create();
