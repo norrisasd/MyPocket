@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     }
     public void openRegister(){
         Intent intent = new Intent(this, Register.class);
+        Intent getInt = getIntent();
+        intent.putExtras(getInt);
         startActivity(intent);
     }
     public void openHome(){

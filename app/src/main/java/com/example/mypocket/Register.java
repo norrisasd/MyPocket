@@ -1,11 +1,11 @@
 package com.example.mypocket;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class Register extends AppCompatActivity {
 EditText fname,lname,user,pass,cpass;
@@ -35,6 +35,7 @@ EditText fname,lname,user,pass,cpass;
             Toast.makeText(Register.this, "Password doesnt match", Toast.LENGTH_SHORT).show();
             return;
         }
+
         boolean check = db.createUser(firstname,lastname,username,password);
         if(check){
             Toast.makeText(Register.this, "Registered", Toast.LENGTH_SHORT).show();
@@ -42,5 +43,6 @@ EditText fname,lname,user,pass,cpass;
         }else{
             Toast.makeText(Register.this, "Username is taken", Toast.LENGTH_SHORT).show();
         }
+        getIntent().putExtra("fullname", firstname);
     }
 }

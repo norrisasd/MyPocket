@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -28,14 +29,16 @@ public class add_expenses extends Fragment {
        Button btn = (Button)view.findViewById(R.id.addexpense_button);
        EditText amount = (EditText)view.findViewById(R.id.et_amount);
         EditText enote = (EditText)view.findViewById(R.id.expense_note);
-
+        DBHelper db = new DBHelper(getActivity());
+        Intent intent = getActivity().getIntent();
        AutoCompleteTextView actv= (AutoCompleteTextView)view.findViewById(R.id.date_text);
         SimpleDateFormat dateN = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault());
         String date = dateN.format(Calendar.getInstance().getTime());
         actv.setText(date);
 
         Spinner ecategory = view.findViewById(R.id.expense_category);
-        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.expcategory));
+        ArrayList<String> spinnerValues = db.getUserCategories(intent.getStringExtra("user"));
+        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_list_item_1, spinnerValues);
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         ecategory.setAdapter(myAdapter);
 
@@ -55,6 +58,7 @@ public class add_expenses extends Fragment {
                             if(check){
                                 Toast.makeText(getActivity().getApplicationContext(), "Added", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getActivity(),Home.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 Intent getInt = getActivity().getIntent();
                                 double total = db.getTotalExpenses(user);
                                 intent.putExtras(getInt);
@@ -67,7 +71,6 @@ public class add_expenses extends Fragment {
                 }
                 else{
                     String selecteditem = parent.getItemAtPosition(position).toString();
-                    Toast.makeText(getActivity().getBaseContext(), ""+selecteditem, Toast.LENGTH_SHORT).show();
 
                     btn.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -80,6 +83,7 @@ public class add_expenses extends Fragment {
                             if(check){
                                 Toast.makeText(getActivity().getApplicationContext(), "Added", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getActivity(),Home.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 Intent getInt = getActivity().getIntent();
                                 double total = db.getTotalExpenses(user);
                                 intent.putExtras(getInt);
@@ -97,12 +101,14 @@ public class add_expenses extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
+
         });
 
-
-
         return view;
+
     }
+
+
 
 
 }

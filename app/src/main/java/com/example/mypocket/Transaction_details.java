@@ -36,7 +36,14 @@ public class Transaction_details extends AppCompatActivity {
                 arrayList.add(db.getExpensesAmountById(user,id));
             }
 
-        }else{
+        }
+        else if(check.equals("savings")) {
+            arrayID = db.getSavingsIDByDate(user, date);
+            for (Integer id : arrayID) {
+                arrayList.add(db.getSavingsAmountById(user, id));
+            }
+        }
+        else{
             arrayID = db.getIncomeIDByDate(user,date);
             for(Integer id : arrayID){
                 arrayList.add(db.getIncomeAmountById(user,id));
@@ -51,46 +58,109 @@ public class Transaction_details extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Cursor cursor;
                 AlertDialog.Builder builder = new AlertDialog.Builder(Transaction_details.this);
+
                 if(check.equals("income")){
                     cursor = db.getIncomeInfoByID(user,arrayID.get(position));
                     builder.setTitle("Income");
-                }else {
+                    builder.setMessage("Amount:"+Double.toString(cursor.getDouble(5))+"\nCategory: "+cursor.getString(3)+"\nDate: "+cursor.getString(2)+"\nNote: "+cursor.getString(4)+"");
+//                    builder.setCancelable(false);
+                }
+                else if(check.equals("savings")){
+                    cursor = db.getSavingsInfoByID(user,arrayID.get(position));
+                    builder.setTitle("Savings");
+                    builder.setMessage("Amount:"+Double.toString(cursor.getDouble(4))+"\nDate: "+cursor.getString(2)+
+                            "\nNote: "+cursor.getString(3)+"");
+                }
+                else {
                     cursor = db.getExpensesInfoByID(user, arrayID.get(position));
                     builder.setTitle("Expenses");
+                    builder.setMessage("Amount:"+Double.toString(cursor.getDouble(5))+"\nCategory: "+cursor.getString(3)+"\nDate: "+cursor.getString(2)+"\nNote: "+cursor.getString(4)+"");
                 }
 
-                builder.setMessage("Amount:"+Double.toString(cursor.getDouble(5))+"\nCategory: "+cursor.getString(3)+"\nDate: "+cursor.getString(2)+"\nNote: "+cursor.getString(4)+"");
-                builder.setCancelable(false);
-                builder.setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton("EDIT", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        // When the user click yes button
-                        // then app will close
-                        finish();
+                        if(check.equals("income")){
+//                            EditIncomeTransaction();
+                            Intent intent = new Intent(getApplicationContext(), income_edit_transaction.class);
+                            intent.putExtra("position",arrayID.get(position));
+                            intent.putExtras(getIntent());
+                            //intent.putExtra("incdeets",getIntent());
+                            startActivity(intent);
+                        }
+
+                        else if(check.equals("savings")){
+                            Intent intent = new Intent(getApplicationContext(), savings_edit_transaction.class);
+                            intent.putExtra("position",arrayID.get(position));
+                            intent.putExtras(getIntent());
+                            startActivity(intent);
+                        }
+                        else{
+                            Intent intent = new Intent(getApplicationContext(), expense_edit_transaction.class);
+                            intent.putExtra("position",arrayID.get(position));
+                            intent.putExtras(getIntent());
+                            startActivity(intent);
+                        }
+
                     }
                 });
 
-                // Set the Negative button with No name
-                // OnClickListener method is use
-                // of DialogInterface interface.
-                builder.setNegativeButton("EDIT", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton("DELETE", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
+                        if(check.equals("income")){
+                            //DELETE FOR INCOME
+                            db.DeleteIncomeTransaction(user,arrayID.get(position));
+                            startActivity(getIntent().addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).putExtras(getIntent()));
+                        }
 
-                        // If user click no
-                        // then dialog box is canceled.
+                         else if(check.equals("savings")){
+                            //DELETE FOR SAVINGS
+                            db.DeleteSavingsTransaction(user,arrayID.get(position));
+                            startActivity(getIntent().addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).putExtras(getIntent()));
+                        }
+                         else
+                            //DELETE FOR EXPENSES
+                            db.DeleteExpenseTransaction(user,arrayID.get(position));
+                            startActivity(getIntent().addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).putExtras(getIntent()));
+
+
                         dialog.cancel();
                     }
                 });
 
-                // Create the Alert dialog
                 AlertDialog alertDialog = builder.create();
-
-                // Show the Alert Dialog box
                 alertDialog.show();
+
+
             }
         });
     }
+
+    //    public void EditIncomeTransaction(){
+//        LayoutInflater inflater = Transaction_details.this.getLayoutInflater();
+//        View v = inflater.inflate(R.layout.income_edit_transaction,null);
+//        EditText icategory = v.findViewById(R.id.income_transaction);
+//        String user = getIntent().getStringExtra("user");
+//
+//        AlertDialog.Builder builderinc = new AlertDialog.Builder(this);
+//        builderinc.setView(v)
+//                .setTitle("Edit Income Transaction")
+//                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.cancel();
+//                    }
+//                })
+//                .setPositiveButton("APPLY", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        //CALL UPDATE DATABASE
+//                    }
+//                });
+//        AlertDialog alertDialog1 = builderinc.create();
+//        alertDialog1.show();
+//    }
 }

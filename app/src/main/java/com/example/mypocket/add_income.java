@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -28,10 +29,11 @@ public class add_income extends Fragment  {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_add_income, container, false);
-
+        DBHelper db = new DBHelper(getActivity());
         Button addincome = (Button)view.findViewById(R.id.addincome_button);
         EditText incomeamount = (EditText)view.findViewById(R.id.income_amount);
         EditText inote = view.findViewById(R.id.income_note);
+        Intent intent = getActivity().getIntent();
 
         AutoCompleteTextView datein = (AutoCompleteTextView) view.findViewById(R.id.income_date);
         SimpleDateFormat dateN = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault());
@@ -39,7 +41,8 @@ public class add_income extends Fragment  {
         datein.setText(indate);
 
         Spinner icategory = view.findViewById(R.id.income_category);
-        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.inccategory));
+        ArrayList<String> spinnerValues = db.getUserIncomeCategories(intent.getStringExtra("user"));
+        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_list_item_1, spinnerValues);
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         icategory.setAdapter(myAdapter);
 
@@ -58,10 +61,11 @@ public class add_income extends Fragment  {
                             if(check){
                                 Toast.makeText(getActivity().getApplicationContext(), "Added", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getActivity(),Home.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 Intent getInt = getActivity().getIntent();
                                 double totalinc = db.getTotalIncome(user);
                                 intent.putExtras(getInt);
-                                intent.putExtra("totalinc",totalinc);
+                                //intent.putExtra("totalinc",totalinc);
                                 startActivity(intent);
                                 getActivity().finish();
                             }
@@ -70,7 +74,7 @@ public class add_income extends Fragment  {
                 }
                 else{
                     String selecteditem = parent.getItemAtPosition(position).toString();
-                    Toast.makeText(getActivity().getBaseContext(), ""+selecteditem, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getActivity().getBaseContext(), ""+selecteditem, Toast.LENGTH_SHORT).show();
 
                     addincome.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -81,9 +85,12 @@ public class add_income extends Fragment  {
                             if(check){
                                 Toast.makeText(getActivity().getApplicationContext(), "Added", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getActivity(),Home.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 Intent getInt = getActivity().getIntent();
-                                double totalinc = db.getTotalIncome(user);
                                 intent.putExtras(getInt);
+
+                                double totalinc = db.getTotalIncome(user);
+
                                 intent.putExtra("totalinc",totalinc);
                                 startActivity(intent);
                                 getActivity().finish();
