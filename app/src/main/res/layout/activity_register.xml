@@ -8,26 +8,29 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="410dp"
+        android:layout_height="716dp"
+        android:background="#EBF8EC"
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".Register"
         tools:layout_editor_absoluteX="0dp">
 
         <TextView
             android:id="@+id/textView10"
-            android:layout_width="146dp"
-            android:layout_height="68dp"
+            android:layout_width="234dp"
+            android:layout_height="69dp"
             android:layout_marginStart="133dp"
             android:layout_marginTop="220dp"
             android:layout_marginEnd="133dp"
             android:layout_marginBottom="8dp"
-            android:fontFamily="@font/annie_use_your_telescope"
+            android:fontFamily="sans-serif-black"
             android:text="MyPocket"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="#89A68B"
             android:textSize="48sp"
             app:layout_constraintBottom_toTopOf="@+id/first_name"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.505"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.382" />
@@ -40,8 +43,9 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="39dp"
             android:layout_marginBottom="81dp"
-            android:text="CREATE ACCOUNT"
+            android:backgroundTint="#89A68B"
             android:onClick="setRegister"
+            android:text="CREATE ACCOUNT"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -71,7 +75,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="40dp"
             android:ems="10"
-            android:hint="Full Name"
+            android:hint="First Name"
             android:inputType="textPersonName"
             app:layout_constraintBottom_toTopOf="@+id/last_name"
             app:layout_constraintEnd_toEndOf="parent"
@@ -104,7 +108,7 @@
             android:layout_marginEnd="39dp"
             android:ems="10"
             android:freezesText="false"
-            android:hint="E-mail"
+            android:hint="Last Name"
             android:inputType="text"
             app:layout_constraintBottom_toTopOf="@+id/reg_user"
             app:layout_constraintEnd_toEndOf="parent"
@@ -126,6 +130,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/reg_pass" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="207dp"
+            android:layout_height="189dp"
+            android:layout_marginBottom="28dp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/_626688279591" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

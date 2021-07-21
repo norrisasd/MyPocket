@@ -5,6 +5,7 @@
     android:id="@+id/frameLayout4"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#EBF8EC"
     tools:context=".budget">
 
     <EditText
@@ -15,6 +16,7 @@
         android:ems="10"
         android:enabled="false"
         android:inputType="numberDecimal"
+        android:textColor="#80A882"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/period_spinner"
         app:layout_constraintTop_toTopOf="parent"
@@ -68,6 +70,9 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="346dp"
         android:text="SO FAR YOU SPENT:"
+        android:textColor="#3D4E3E"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -78,11 +83,12 @@
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
-        android:indeterminate="false"
         android:layout_width="204dp"
         android:layout_height="45dp"
         android:layout_marginStart="103dp"
         android:layout_marginEnd="104dp"
+        android:indeterminate="false"
+        android:progressTint="#38593B"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

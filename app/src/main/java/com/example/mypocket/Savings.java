@@ -1,9 +1,7 @@
 package com.example.mypocket;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,11 +16,11 @@ public class Savings extends AppCompatActivity {
         setContentView(R.layout.activity_savings);
 
         FloatingActionButton savings = findViewById(R.id.addsaving_button);
-        Switch sm = findViewById(R.id.saving_switch);
+      //  Switch sm = findViewById(R.id.saving_switch);
 
 
-        SharedPreferences sharedPreferences =getSharedPreferences("save1",MODE_PRIVATE);
-        sm.setChecked(sharedPreferences.getBoolean("value1",true));
+//        SharedPreferences sharedPreferences =getSharedPreferences("save1",MODE_PRIVATE);
+//        sm.setChecked(sharedPreferences.getBoolean("value1",true));
 
 
         savings.setOnClickListener(new View.OnClickListener() {
