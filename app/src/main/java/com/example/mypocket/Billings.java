@@ -1,8 +1,11 @@
 package com.example.mypocket;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,6 +27,7 @@ public class Billings extends AppCompatActivity {
 
     ArrayList<String> billslist = new ArrayList<>();
     ArrayList<Integer> arrayID = new ArrayList<>();
+    private int notificationId = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,7 @@ public class Billings extends AppCompatActivity {
         addb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(getApplication(), add_bills.class);
                 Intent getInt = getIntent();
                 intent.putExtras(getInt);
@@ -52,6 +57,17 @@ public class Billings extends AppCompatActivity {
         arrayAdapter.notifyDataSetChanged();
         list.setAdapter(arrayAdapter);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // For API 26 and above
+            CharSequence channelName = "My Notification";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+
+            NotificationChannel channel = new NotificationChannel("My Notification", channelName, importance);
+           NotificationManager manager = getSystemService(NotificationManager.class);
+           manager.createNotificationChannel(channel);
+        }
+
+
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -60,6 +76,7 @@ public class Billings extends AppCompatActivity {
                 Cursor cursor = db.getBillsInfoByID(user,arrayID.get(position));
                 builder1.setTitle(cursor.getString(3));
                 builder1.setMessage("\nAmount\t:\t"+cursor.getDouble(4)+"\nDue Date\t:\t"+cursor.getString(2)+"");
+
 
                 builder1.setPositiveButton("EDIT", new DialogInterface.OnClickListener() {
                     @Override
@@ -105,6 +122,7 @@ public class Billings extends AppCompatActivity {
 
             }
         });
+
     }
     @Override
     public void onBackPressed() {
@@ -114,4 +132,5 @@ public class Billings extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
+
 }

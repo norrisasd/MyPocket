@@ -71,7 +71,6 @@ public class add_expenses extends Fragment {
                 }
                 else{
                     String selecteditem = parent.getItemAtPosition(position).toString();
-                    Toast.makeText(getActivity().getBaseContext(), ""+selecteditem, Toast.LENGTH_SHORT).show();
 
                     btn.setOnClickListener(new View.OnClickListener() {
                         @Override

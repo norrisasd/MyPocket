@@ -8,6 +8,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -41,10 +43,42 @@ public class add_bills extends AppCompatActivity {
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     Intent getInt = getIntent();
                     intent.putExtras(getInt);
+                    if(duedate.getText().toString().matches("July 22, 2021")){
+                        NotificationCompat.Builder build = new NotificationCompat.Builder(add_bills.this,"My Notification")
+                                .setSmallIcon(android.R.drawable.ic_dialog_info)
+                                .setContentTitle(company.getText().toString())
+                                .setContentText("Your bill is due tomorrow worth "+amount.getText().toString()+" PHP")
+                                // .setContentIntent(contentIntent)
+                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                .setAutoCancel(true);
+                        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(add_bills.this);
+                        managerCompat.notify(1,build.build());
+                    }
+                    else if (duedate.getText().toString().matches("July 21, 2021")){
+                        NotificationCompat.Builder build = new NotificationCompat.Builder(add_bills.this,"My Notification")
+                                .setSmallIcon(android.R.drawable.ic_dialog_info)
+                                .setContentTitle(company.getText().toString())
+                                .setContentText("Your bill is due today worth "+amount.getText().toString()+" PHP")
+                                // .setContentIntent(contentIntent)
+                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                .setAutoCancel(true);
+                        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(add_bills.this);
+                        managerCompat.notify(1,build.build());
+
+                    }
+
+                    else{
+
+                    }
                     startActivity(intent);
                     finish();
+
+
                 }
+
+
             }
         });
     }
+
 }

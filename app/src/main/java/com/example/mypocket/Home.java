@@ -16,7 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -178,34 +180,86 @@ public class Home extends AppCompatActivity {
         });
 
 
-        ImageButton nav = findViewById(R.id.menu_button);
         DrawerLayout drawerLayout = findViewById(R.id.drawerlayout);
         NavigationView navigationView =findViewById(R.id.navigationview);
-
-        nav.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawerLayout.openDrawer(Gravity.LEFT);
-                //hamMenu(v);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        this.setTitle("");
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(Home.this, drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+                drawerLayout.addDrawerListener(toggle);
+                toggle.syncState();
+                navigationView.bringToFront();
                 navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
                         int id = item.getItemId();
-                        if(id == R.id.signout_menu){
+                        if(id == R.id.category_menu){
 
-                            Toast.makeText(getApplicationContext(), "Empty Field", Toast.LENGTH_SHORT).show();
-//                            Intent intent = new Intent(getApplicationContext(), Categories.class);
-//                            startActivity(intent);
+                            Intent intent = new Intent(getApplicationContext(), Categories.class);
+                            Intent getInt = getIntent();
+                            intent.putExtras(getInt);
+                            startActivity(intent);
                         }
 
+                        else if(id == R.id.signout_menu){
+                            new AlertDialog.Builder(Home.this)
+                                    .setTitle("Sign Out")
+                                    .setMessage("Are you sure you want to sign out?")
+                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            Intent intent = new Intent(Home.this, MainActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    })
+                                    .setNegativeButton("No", null)
+                                    .show();
+                        }
+                        else if (id==R.id.about_menu)
+                        {
+                            new AlertDialog.Builder(Home.this)
+                                    .setTitle("\t\t\t\t\t\t\t\t\t\t\t\t\t\tGOAL DIGGERS")
+                                    .setMessage("\n\t\t\t\t\t\t\t\t\tRHEAYNNE RAY R. EDUYAN\n" +
+                                            "\t\t\t\t\t\t\t\t\tJESSA MARIE MACAPAGONG\n" +
+                                            "\t\t\t\t\t\t\t\t\tERIKA MAE NUÑEZ\n" +
+                                            "\t\t\t\t\t\t\t\t\tJACQUELYN T. SEJISMUNDO\n").show();
+                        }
 
-
-                        drawerLayout.closeDrawer(Gravity.LEFT);
-                        return true;
-                    }
-                });
+                drawerLayout.closeDrawers();
+                return true;
             }
         });
+        View header =navigationView.getHeaderView(0);
+        TextView name = header.findViewById(R.id.fullname);
+        String user = getIntent().getStringExtra("user");
+        name.setText(db.getFullname(user));
+
+        TextView email = header.findViewById(R.id.email);
+        email.setText(db.getEmail(user));
+
+
+//        nav.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                drawerLayout.openDrawer(Gravity.LEFT);
+//                //hamMenu(v);
+//                navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+//                    @Override
+//                    public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
+//                        int id = item.getItemId();
+//                        if(id == R.id.signout_menu){
+//
+//                            Toast.makeText(getApplicationContext(), "Empty Field", Toast.LENGTH_SHORT).show();
+////                            Intent intent = new Intent(getApplicationContext(), Categories.class);
+////                            startActivity(intent);
+//                        }
+//
+//                        drawerLayout.closeDrawer(Gravity.LEFT);
+//                        return true;
+//                    }
+//                });
+//            }
+//        });
 
 
 

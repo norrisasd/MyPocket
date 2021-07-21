@@ -74,7 +74,7 @@ public class add_income extends Fragment  {
                 }
                 else{
                     String selecteditem = parent.getItemAtPosition(position).toString();
-                    Toast.makeText(getActivity().getBaseContext(), ""+selecteditem, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getActivity().getBaseContext(), ""+selecteditem, Toast.LENGTH_SHORT).show();
 
                     addincome.setOnClickListener(new View.OnClickListener() {
                         @Override

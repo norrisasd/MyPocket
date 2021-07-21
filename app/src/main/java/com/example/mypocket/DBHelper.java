@@ -15,8 +15,8 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String USER_TABLE = "USER_TABLE";
     private static final String USERNAME = "USERNAME";
     private static final String PASSWORD = "PASSWORD";
-    private static final String FIRSTNAME = "FIRSTNAME";
-    private static final String LASTNAME = "LASTNAME";
+    private static final String FIRSTNAME = "FULLNAME";
+    private static final String LASTNAME = "EMAIL";
 
 
     private static final String EXPENSE_TABLE = "EXPENSE_TABLE";
@@ -130,6 +130,26 @@ public class DBHelper extends SQLiteOpenHelper {
             check = true;
 
         return check;
+    }
+    public String getFullname(String user) {
+        String fname = "";
+        String queryString = "SELECT FULLNAME FROM USER_TABLE where USERNAME='" + user + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString, null);
+        if(cursor.moveToFirst()){
+            fname = cursor.getString(0);
+        }
+        return fname;
+    }
+    public String getEmail(String user) {
+        String mail = "";
+        String queryString = "SELECT EMAIL FROM USER_TABLE where USERNAME='" + user + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString, null);
+        if(cursor.moveToFirst()){
+            mail = cursor.getString(0);
+        }
+        return mail;
     }
 
     public boolean createExpense(double amount, String user, String date, String category, String notes) {

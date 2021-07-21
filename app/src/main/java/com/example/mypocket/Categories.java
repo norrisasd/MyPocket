@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -20,7 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class Categories extends AppCompatActivity{
 //    Expense_dialog.expdiaglistener
     FragmentTransaction fragmentTransaction;
-    TextView text;
+ //   TextView text;
     EditText ecategory;
     EditText icategory;
     DBHelper db;
@@ -101,7 +100,7 @@ public class Categories extends AppCompatActivity{
     public void ExpenseDialog(){
         LayoutInflater inflater = Categories.this.getLayoutInflater();
         View view = inflater.inflate(R.layout.expense_dialog,null);
-        text = findViewById(R.id.textView30);
+       // text = findViewById(R.id.textView30);
         ecategory = view.findViewById(R.id.expense_dialog_text);
         user = getIntent().getStringExtra("user");
 
@@ -126,7 +125,7 @@ public class Categories extends AppCompatActivity{
                             }
                             else{
                                 Toast.makeText(getApplicationContext(), "Added", Toast.LENGTH_SHORT).show();
-                                text.setText(expcategory);
+                               // text.setText(expcategory);
                                 AddExpenseCategory();
                             }
                         } catch (Exception e) {
@@ -149,7 +148,7 @@ public class Categories extends AppCompatActivity{
     public void IncomeDialog(){
         LayoutInflater inflater = Categories.this.getLayoutInflater();
         View view = inflater.inflate(R.layout.income_dialog,null);
-        text = findViewById(R.id.textView30);
+       // text = findViewById(R.id.textView30);
         icategory = view.findViewById(R.id.income_dialog);
         user = getIntent().getStringExtra("user");
 
@@ -173,7 +172,7 @@ public class Categories extends AppCompatActivity{
                                 Toast.makeText(getApplicationContext(), "Empty Field", Toast.LENGTH_SHORT).show();
                             }
                             else{
-                                text.setText(inccategory);
+                               // text.setText(inccategory);
                                 AddIncomeCategory();
                                 dialog.dismiss();
                             }
