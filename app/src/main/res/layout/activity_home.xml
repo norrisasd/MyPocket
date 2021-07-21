@@ -3,20 +3,21 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    tools:context=".Home"
     android:id="@+id/drawerlayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#009C3333"
     android:fitsSystemWindows="true"
+    tools:context=".Home"
     tools:openDrawer="start">
 
     <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigationview"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:id="@+id/navigationview"
+        android:layout_gravity="start"
         app:headerLayout="@layout/header"
-        app:menu="@menu/sidemenu"
-        android:layout_gravity="start">
+        app:menu="@menu/sidemenu">
 
     </com.google.android.material.navigation.NavigationView>
 
@@ -24,7 +25,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF"
+        android:background="#EBF8EC"
         android:clickable="true">
 
         <androidx.appcompat.widget.Toolbar
@@ -35,55 +36,56 @@
 
         <TextView
             android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="76dp"
-            android:layout_marginTop="23dp"
+            android:layout_width="79dp"
+            android:layout_height="22dp"
             android:text="Income"
-            app:layout_constraintBottom_toTopOf="@+id/textView4"
-            app:layout_constraintEnd_toStartOf="@+id/income"
-            app:layout_constraintHorizontal_bias="0.041"
+            android:textAlignment="textEnd"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.111"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bal" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.186" />
 
         <TextView
             android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="76dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="28dp"
+            android:layout_width="79dp"
+            android:layout_height="22dp"
             android:text="Savings"
-            app:layout_constraintEnd_toStartOf="@+id/saving"
+            android:textAlignment="textEnd"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.111"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.282" />
 
         <TextView
             android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="156dp"
-            android:layout_marginBottom="21dp"
+            android:layout_width="103dp"
+            android:layout_height="27dp"
+            android:fontFamily="sans-serif"
             android:gravity="center_horizontal|center_vertical"
             android:text="Current Balance"
+            android:textAlignment="textEnd"
             app:layout_constraintBottom_toTopOf="@+id/bal"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="60dp"
-            android:layout_height="19dp"
-            android:layout_marginStart="76dp"
-            android:layout_marginTop="31dp"
-            android:layout_marginEnd="28dp"
-            android:layout_marginBottom="20dp"
-            android:text="Expenses"
-            app:layout_constraintBottom_toTopOf="@+id/textView6"
-            app:layout_constraintEnd_toStartOf="@+id/expense"
+        <ImageButton
+            android:id="@+id/menu_button"
+            android:layout_width="64dp"
+            android:layout_height="62dp"
+            android:layout_marginBottom="86dp"
+            android:background="#00FFFFFF"
+            app:layout_constraintBottom_toTopOf="@+id/textView7"
+            app:layout_constraintEnd_toStartOf="@+id/textView5"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView7" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/ic_baseline_menu_24" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add"
@@ -92,6 +94,8 @@
             android:layout_marginStart="60dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="16dp"
+            android:backgroundTint="#89A68B"
+            app:backgroundTint="#00FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.396"
@@ -102,38 +106,64 @@
 
         <TextView
             android:id="@+id/bal"
-            android:layout_width="231dp"
-            android:layout_height="69dp"
-            android:layout_marginBottom="27dp"
+            android:layout_width="242dp"
+            android:layout_height="70dp"
             android:gravity="center|center_vertical"
             android:textAlignment="center"
-            android:textSize="48sp"
-            app:layout_constraintBottom_toTopOf="@+id/income"
+            android:textColor="#768177"
+            android:textSize="60sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/add"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.063" />
 
         <TextView
             android:id="@+id/expense"
-            android:layout_width="193dp"
-            android:layout_height="25dp"
-            android:layout_marginEnd="78dp"
-            android:layout_marginBottom="22dp"
-            app:layout_constraintBottom_toTopOf="@+id/saving"
+            android:layout_width="153dp"
+            android:layout_height="28dp"
+            android:fontFamily="sans-serif-condensed-light"
+            android:textAlignment="viewEnd"
+            android:textColor="#80A882"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/add"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.366"
             app:layout_constraintStart_toEndOf="@+id/textView4"
-            app:layout_constraintTop_toBottomOf="@+id/income" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.232" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="79dp"
+            android:layout_height="22dp"
+            android:text="Expenses"
+            android:textAlignment="textEnd"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.111"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.235" />
 
         <TextView
             android:id="@+id/saving"
-            android:layout_width="193dp"
-            android:layout_height="25dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="71dp"
+            android:layout_width="153dp"
+            android:layout_height="28dp"
+            android:fontFamily="sans-serif-condensed-light"
+            android:textAlignment="viewEnd"
+            android:textColor="#80A882"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/bottomAppBar2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.366"
             app:layout_constraintStart_toEndOf="@+id/textView6"
-            app:layout_constraintTop_toBottomOf="@+id/expense" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.274" />
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottomAppBar2"
@@ -141,6 +171,7 @@
             android:layout_width="413dp"
             android:layout_height="45dp"
             android:layout_gravity="bottom"
+            android:backgroundTint="#A3CFA6"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -176,14 +207,15 @@
 
         <ImageButton
             android:id="@+id/billings_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
+            android:layout_width="27dp"
+            android:layout_height="22dp"
             android:background="#03FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/add"
-            app:layout_constraintHorizontal_bias="0.22"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/bottomAppBar2"
+            app:layout_constraintHorizontal_bias="0.095"
+            app:layout_constraintStart_toStartOf="@+id/bottomAppBar2"
+            app:layout_constraintTop_toBottomOf="@+id/menu_button"
+            app:layout_constraintVertical_bias="0.982"
             app:srcCompat="@android:drawable/ic_menu_my_calendar" />
 
         <ImageButton
@@ -192,6 +224,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
             android:background="#00FFFFFF"
+            android:backgroundTint="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.22"
@@ -200,34 +233,40 @@
 
         <TextView
             android:id="@+id/income"
-            android:layout_width="193dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="23dp"
-            android:layout_marginEnd="71dp"
-            android:layout_marginBottom="27dp"
-            app:layout_constraintBottom_toTopOf="@+id/expense"
+            android:layout_width="153dp"
+            android:layout_height="28dp"
+            android:fontFamily="sans-serif-condensed-light"
+            android:textAlignment="viewEnd"
+            android:textColor="#80A882"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.366"
             app:layout_constraintStart_toEndOf="@+id/textView7"
-            app:layout_constraintTop_toBottomOf="@+id/bal" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.177" />
 
         <Switch
             android:id="@+id/budget_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="308dp"
-            android:layout_marginBottom="386dp"
+            android:fontFamily="sans-serif-condensed"
             android:text="Budget Mode"
-            app:layout_constraintBottom_toTopOf="@+id/billings_button"
+            android:textColor="#516552"
+            android:textStyle="bold"
+            android:thumbTint="#6B9A6D"
+            app:layout_constraintBottom_toBottomOf="@+id/bottomAppBar2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.025"
+            app:layout_constraintHorizontal_bias="0.116"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.347" />
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/budget_fragment"
-            android:layout_width="404dp"
-            android:layout_height="388dp"
+            android:layout_width="416dp"
+            android:layout_height="326dp"
             app:layout_constraintBottom_toTopOf="@+id/bottomAppBar2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
